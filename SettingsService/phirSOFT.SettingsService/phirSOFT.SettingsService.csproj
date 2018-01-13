@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/phirSOFT/SettingsService</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/phirSOFT/SettingsService/blob/master/LICENSE</PackageLicenseUrl>
+    <Authors>phirSOFT</Authors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nito.AsyncEx.Coordination" Version="5.0.0-pre-05" />
+  </ItemGroup>
 
 </Project>

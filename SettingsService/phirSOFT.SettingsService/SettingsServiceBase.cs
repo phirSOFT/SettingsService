@@ -6,11 +6,11 @@ using static phirSOFT.SettingsService.TypeHelper;
 namespace phirSOFT.SettingsService
 {
     /// <summary>
-    /// Implements a settings service that merges the overloads to the most parameter taking overload.
+    ///     Implements a settings service that merges the overloads to the most parameter taking overload.
     /// </summary>
     public abstract class SettingsServiceBase : ISettingsService
     {
-        public async Task<T>  GetSettingAsync<T>(string key)
+        public async Task<T> GetSettingAsync<T>(string key)
         {
             return (T) await GetSettingAsync(key, typeof(T));
         }
@@ -87,6 +87,5 @@ namespace phirSOFT.SettingsService
 
         public abstract Task StoreAsync();
         public abstract Task DiscardAsync();
-
     }
 }

@@ -4,7 +4,6 @@ using System.Reflection;
 
 namespace phirSOFT.SettingsService
 {
-
     internal static class TypeHelper
     {
         internal static bool AreAssignable(TypeInfo typeA, TypeInfo typeB, out Type type)
