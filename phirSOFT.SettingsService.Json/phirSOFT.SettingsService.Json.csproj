@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.1</Version>
+    <PackageProjectUrl>https://github.com/phirSOFT/SettingsService</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
