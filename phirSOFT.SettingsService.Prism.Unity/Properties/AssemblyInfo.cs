@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("phirSOFT.SettingsService.Prism.Unity")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Visual tools to manage settings")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("phirSOFT")]
 [assembly: AssemblyProduct("phirSOFT.SettingsService.Prism.Unity")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
