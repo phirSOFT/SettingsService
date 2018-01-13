@@ -8,6 +8,7 @@ namespace phirSOFT.SettingsService
 {
     using CacheEntry = AsyncLazy<(object value, Type type)>;
 
+    /// <inheritdoc />
     /// <summary>
     ///     Implements a settings service, that will minimize the calls to the
     ///     inheriting settings service. All calls are managed thread safe.
@@ -137,8 +138,10 @@ namespace phirSOFT.SettingsService
 
                 foreach (var key in _changedKeys)
                 {
-                    _valuesCache.TryGetValue(key, out var setting);
-                    var (value, type) = await setting;
+                    if (!_valuesCache.TryGetValue(key, out var setting))
+                        continue;
+
+                    var (value, type) = await setting.ConfigureAwait(false);
                     var task = SetSettingInternalAsync(key, value, type);
 
 

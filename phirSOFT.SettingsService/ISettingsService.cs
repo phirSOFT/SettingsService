@@ -5,7 +5,7 @@ namespace phirSOFT.SettingsService
 {
     /// <summary>
     ///     Provides the basic interface of a settings service to retrive and store settings.
-    ///     All settings can be changed virtually and are only stored persistent, if <see cref="Store" /> is called.
+    ///     All settings can be changed virtually and are only stored persistent, if <see cref="StoreAsync" /> is called.
     /// </summary>
     /// <remarks>
     ///     Though it might not required, most implementations will only accept serializable settings type.
@@ -142,7 +142,7 @@ namespace phirSOFT.SettingsService
         Task StoreAsync();
 
         /// <summary>
-        ///     Discards all changes since the last <see cref="Store" /> call.
+        ///     Discards all changes since the last <see cref="StoreAsync" /> call.
         /// </summary>
         Task DiscardAsync();
     }

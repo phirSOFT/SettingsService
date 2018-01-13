@@ -5,6 +5,7 @@ using static phirSOFT.SettingsService.TypeHelper;
 
 namespace phirSOFT.SettingsService
 {
+    /// <inheritdoc />
     /// <summary>
     ///     Implements a settings service that merges the overloads to the most parameter taking overload.
     /// </summary>
