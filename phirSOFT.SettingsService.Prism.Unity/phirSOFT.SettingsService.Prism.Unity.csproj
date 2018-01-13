@@ -104,6 +104,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="phirSOFT.SettingsService.Prism.Unity.nuspec" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
