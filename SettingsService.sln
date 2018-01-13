@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "phirSOFT.SettingsService", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "phirSOFT.SettingsService.Json", "phirSOFT.SettingsService.Json\phirSOFT.SettingsService.Json.csproj", "{16722E85-787F-4FFB-ACB5-CC3B1C86921C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "phirSOFT.SettingsService.Prism", "phirSOFT.SettingsService.Prism\phirSOFT.SettingsService.Prism.csproj", "{0B185839-665E-4D0E-870E-049D910E75BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "phirSOFT.SettingsService.Prism.Unity", "phirSOFT.SettingsService.Prism.Unity\phirSOFT.SettingsService.Prism.Unity.csproj", "{BAC94C2F-1261-418F-BEDE-78EF65EFA75C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{16722E85-787F-4FFB-ACB5-CC3B1C86921C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16722E85-787F-4FFB-ACB5-CC3B1C86921C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16722E85-787F-4FFB-ACB5-CC3B1C86921C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B185839-665E-4D0E-870E-049D910E75BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B185839-665E-4D0E-870E-049D910E75BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B185839-665E-4D0E-870E-049D910E75BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B185839-665E-4D0E-870E-049D910E75BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAC94C2F-1261-418F-BEDE-78EF65EFA75C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAC94C2F-1261-418F-BEDE-78EF65EFA75C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAC94C2F-1261-418F-BEDE-78EF65EFA75C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAC94C2F-1261-418F-BEDE-78EF65EFA75C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
