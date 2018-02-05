@@ -34,6 +34,10 @@ namespace phirSOFT.SettingsService.Json
             using (await _readerWriterLock.WriterLockAsync())
             {
                 var serializer = new JsonSerializer();
+
+                if (!File.Exists(_filename))
+                    return;
+
                 using (var fs = new StreamReader(new FileStream(_filename, FileMode.Open, FileAccess.Read)))
                 {
                     var reader = new JsonTextReader(fs);
