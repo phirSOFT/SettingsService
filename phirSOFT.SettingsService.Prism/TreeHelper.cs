@@ -38,7 +38,14 @@ namespace phirSOFT.SettingsService.Prism
             while (true)
             {
                 var currentNode = settingPages.Current;
-                var child = tree.FirstOrDefault(model => model.Node.Equals(currentNode)) ?? modelFactory(currentNode);
+                var child = tree.FirstOrDefault(model => model.Node.Equals(currentNode));
+
+                if (child ==null)
+                {
+                    child = modelFactory(currentNode);
+                    tree.Add(child);
+                }
+
                 if (settingPages.MoveNext())
                 {
                     tree = child.Children;
