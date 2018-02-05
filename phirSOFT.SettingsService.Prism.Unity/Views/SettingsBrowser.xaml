@@ -22,7 +22,7 @@
         </Grid.ColumnDefinitions>
         <TextBox Text="{Binding Filter, Mode=TwoWay}" Margin="4" />
         <TreeView Margin="4" Grid.Row="1" Grid.Column="0"
-                  d:DataContext="{d:DesignInstance viewModels:SettingsNodeViewModel}" ItemsSource="{Binding Children}">
+                  d:DataContext="{d:DesignInstance viewModels:SettingsNodeViewModel}" ItemsSource="{Binding RootNodes}">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="IsSelected" Value="{Binding IsActive, Mode=OneWayToSource}" />
