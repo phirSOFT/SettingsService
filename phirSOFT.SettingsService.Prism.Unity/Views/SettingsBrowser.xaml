@@ -8,46 +8,46 @@
              xmlns:unity="clr-namespace:phirSOFT.SettingsService.Prism.Unity"
              xmlns:regions="http://prismlibrary.com/"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+
+             d:DesignHeight="300" d:DesignWidth="300"
+             regions:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition MinWidth="150" MaxWidth="300" Width="*" />
-                <ColumnDefinition Width="4*" />
-            </Grid.ColumnDefinitions>
-            <TextBox Text="{Binding Filter, Mode=TwoWay}" Margin="4" />
-            <TreeView Margin="4" Grid.Row="1" Grid.Column="0"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="150" MaxWidth="300" Width="*" />
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
+        <TextBox Text="{Binding Filter, Mode=TwoWay}" Margin="4" />
+        <TreeView Margin="4" Grid.Row="1" Grid.Column="0"
                   d:DataContext="{d:DesignInstance viewModels:SettingsNodeViewModel}" ItemsSource="{Binding Children}">
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="TreeViewItem">
-                        <Setter Property="IsSelected" Value="{Binding IsActive, Mode=OneWayToSource}" />
-                        <Setter Property="Visibility">
-                            <Setter.Value>
-                                <Binding Mode="OneWay" Path="IsVisible">
-                                    <Binding.Converter>
-                                        <BooleanToVisibilityConverter/>
-                                    </Binding.Converter>
-                                </Binding>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TreeView.ItemContainerStyle>
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <Label Content="{Binding DisplayLabel}" />
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsSelected" Value="{Binding IsActive, Mode=OneWayToSource}" />
+                    <Setter Property="Visibility">
+                        <Setter.Value>
+                            <Binding Mode="OneWay" Path="IsVisible">
+                                <Binding.Converter>
+                                    <BooleanToVisibilityConverter/>
+                                </Binding.Converter>
+                            </Binding>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <Label Content="{Binding DisplayLabel}" />
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
 
 
-            </TreeView>
+        </TreeView>
 
-            <ContentControl Margin="4" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
+        <ContentControl Margin="4" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
                         regions:RegionManager.RegionName="SettingsPane" />
-          
-        </Grid>
+
     </Grid>
 </UserControl>
