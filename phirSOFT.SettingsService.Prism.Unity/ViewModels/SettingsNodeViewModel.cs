@@ -37,7 +37,7 @@ namespace phirSOFT.SettingsService.Prism.Unity.ViewModels
             }
         }
 
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; set; } = true;
 
         public string DisplayLabel => Node.DisplayText;
 
