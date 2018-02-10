@@ -14,7 +14,6 @@ namespace phirSOFT.SettingsService
     /// </remarks>
     public interface ISettingsService : IReadOnlySettingsService
     {
-
         /// <summary>
         ///     Sets a setting to a new value.
         /// </summary>
