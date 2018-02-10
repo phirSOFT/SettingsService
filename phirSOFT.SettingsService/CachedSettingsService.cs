@@ -13,7 +13,7 @@ namespace phirSOFT.SettingsService
     ///     Implements a settings service, that will minimize the calls to the
     ///     inheriting settings service. All calls are managed thread safe.
     /// </summary>
-    public abstract class CachedSettingsService : SettingsServiceBase
+    public abstract class CachedSettingsService : ISettingsService
     {
         private readonly SortedSet<string> _changedKeys = new SortedSet<string>();
         private readonly SortedSet<string> _deletedKeys = new SortedSet<string>();
@@ -42,7 +42,7 @@ namespace phirSOFT.SettingsService
         protected abstract bool SupportConcurrentRegister { get; }
 
         /// <inheritdoc />
-        public override async Task<object> GetSettingAsync(string key, Type type)
+        public async Task<object> GetSettingAsync(string key, Type type)
         {
             using (var _ = await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -53,23 +53,9 @@ namespace phirSOFT.SettingsService
             }
         }
 
-        private async Task<(object, Type)> ConstructCacheEntry(string key, Type type)
-        {
-            var value = await GetSettingInternalAsync(key, type).ConfigureAwait(false);
-            return (value, type);
-        }
-
-        /// <summary>
-        ///     Retrives the value of a setting from the actual settings service.
-        /// </summary>
-        /// <param name="key">The key of the setting.</param>
-        /// <param name="type">The type of the setting</param>
-        /// <returns>The setting with the given key.</returns>
-        protected abstract Task<object> GetSettingInternalAsync(string key, Type type);
-
 
         /// <inheritdoc />
-        public override async Task SetSettingAsync(string key, object value, Type type)
+        public async Task SetSettingAsync(string key, object value, Type type)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -86,7 +72,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
-        public override async Task RegisterSettingAsync(string key, object defaultValue, object initialValue, Type type)
+        public async Task RegisterSettingAsync(string key, object defaultValue, object initialValue, Type type)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -97,7 +83,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
-        public override async Task UnregisterSettingAsync(string key)
+        public async Task UnregisterSettingAsync(string key)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -111,7 +97,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
-        public override async Task<bool> IsRegisterdAsync(string key)
+        public async Task<bool> IsRegisterdAsync(string key)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -120,7 +106,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
-        public override async Task StoreAsync()
+        public async Task StoreAsync()
         {
             using (await _readerWriterLock.WriterLockAsync().ConfigureAwait(false))
             {
@@ -183,7 +169,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
-        public override async Task DiscardAsync()
+        public async Task DiscardAsync()
         {
             using (await _readerWriterLock.ReaderLockAsync())
             {
@@ -193,6 +179,20 @@ namespace phirSOFT.SettingsService
                 _valuesCache.Clear();
             }
         }
+
+        private async Task<(object, Type)> ConstructCacheEntry(string key, Type type)
+        {
+            var value = await GetSettingInternalAsync(key, type).ConfigureAwait(false);
+            return (value, type);
+        }
+
+        /// <summary>
+        ///     Retrives the value of a setting from the actual settings service.
+        /// </summary>
+        /// <param name="key">The key of the setting.</param>
+        /// <param name="type">The type of the setting</param>
+        /// <returns>The setting with the given key.</returns>
+        protected abstract Task<object> GetSettingInternalAsync(string key, Type type);
 
         /// <summary>
         ///     Performs the actual store operation.
