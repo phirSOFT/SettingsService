@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using static phirSOFT.SettingsService.TypeHelper;
+
 namespace phirSOFT.SettingsService
 {
     /// <summary>
@@ -28,7 +29,7 @@ namespace phirSOFT.SettingsService
         /// <returns>The value of the setting, if its present in this service</returns>
         public static async Task<T> GetSettingAsync<T>(this IReadOnlySettingsService service, string key)
         {
-            return (T)await service.GetSettingAsync(key, typeof(T));
+            return (T) await service.GetSettingAsync(key, typeof(T));
         }
 
         /// <summary>
