@@ -13,7 +13,7 @@ namespace phirSOFT.SettingsService
     ///     Implements a settings service, that will minimize the calls to the
     ///     inheriting settings service. All calls are managed thread safe.
     /// </summary>
-    public abstract class CachedSettingsService : SettingsServiceBase
+    public abstract class CachedSettingsService : ISettingsService
     {
         private readonly SortedSet<string> _changedKeys = new SortedSet<string>();
         private readonly SortedSet<string> _deletedKeys = new SortedSet<string>();
@@ -42,7 +42,7 @@ namespace phirSOFT.SettingsService
         protected abstract bool SupportConcurrentRegister { get; }
 
         /// <inheritdoc />
-        public override async Task<object> GetSettingAsync(string key, Type type)
+        public async Task<object> GetSettingAsync(string key, Type type)
         {
             using (var _ = await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -69,7 +69,7 @@ namespace phirSOFT.SettingsService
 
 
         /// <inheritdoc />
-        public override async Task SetSettingAsync(string key, object value, Type type)
+        public async Task SetSettingAsync(string key, object value, Type type)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -86,7 +86,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
-        public override async Task RegisterSettingAsync(string key, object defaultValue, object initialValue, Type type)
+        public async Task RegisterSettingAsync(string key, object defaultValue, object initialValue, Type type)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -97,7 +97,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
-        public override async Task UnregisterSettingAsync(string key)
+        public async Task UnregisterSettingAsync(string key)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -111,7 +111,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
-        public override async Task<bool> IsRegisterdAsync(string key)
+        public async Task<bool> IsRegisterdAsync(string key)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -120,7 +120,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
-        public override async Task StoreAsync()
+        public async Task StoreAsync()
         {
             using (await _readerWriterLock.WriterLockAsync().ConfigureAwait(false))
             {
@@ -183,7 +183,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
-        public override async Task DiscardAsync()
+        public async Task DiscardAsync()
         {
             using (await _readerWriterLock.ReaderLockAsync())
             {
