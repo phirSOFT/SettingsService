@@ -10,7 +10,7 @@ using Nito.AsyncEx;
 
 namespace phirSOFT.SettingsService.Json
 {
-    public class JsonSettingsService : ISettingsService
+    public class JsonSettingsService : SettingsServiceBase
     {
         private readonly IDictionary<string, object> _defaultValues;
         private readonly string _filename;
@@ -30,7 +30,7 @@ namespace phirSOFT.SettingsService.Json
             _initializerTask = Initialize();
         }
 
-        public async Task<object> GetSettingAsync(string key, Type type)
+        public override async Task<object> GetSettingAsync(string key, Type type)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -41,7 +41,7 @@ namespace phirSOFT.SettingsService.Json
             }
         }
 
-        public async Task SetSettingAsync(string key, object value, Type type)
+        public override async Task SetSettingAsync(string key, object value, Type type)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -54,7 +54,7 @@ namespace phirSOFT.SettingsService.Json
             }
         }
 
-        public async Task RegisterSettingAsync(string key, object defaultValue, object initialValue, Type type)
+        public override async Task RegisterSettingAsync(string key, object defaultValue, object initialValue, Type type)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -64,7 +64,7 @@ namespace phirSOFT.SettingsService.Json
             }
         }
 
-        public async Task UnregisterSettingAsync(string key)
+        public override async Task UnregisterSettingAsync(string key)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -74,7 +74,7 @@ namespace phirSOFT.SettingsService.Json
             }
         }
 
-        public async Task<bool> IsRegisterdAsync(string key)
+        public override async Task<bool> IsRegisterdAsync(string key)
         {
             using (await _readerWriterLock.ReaderLockAsync())
             {
@@ -82,7 +82,7 @@ namespace phirSOFT.SettingsService.Json
             }
         }
 
-        public async Task StoreAsync()
+        public override async Task StoreAsync()
         {
             using (await _readerWriterLock.WriterLockAsync().ConfigureAwait(false))
             {
@@ -105,7 +105,7 @@ namespace phirSOFT.SettingsService.Json
             }
         }
 
-        public async Task DiscardAsync()
+        public override async Task DiscardAsync()
         {
             using (await _readerWriterLock.WriterLockAsync().ConfigureAwait(false))
             {
