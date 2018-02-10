@@ -1,0 +1,38 @@
+version: 0.1.{build}
+image: Visual Studio 2017
+skip_tags: true
+configuration: Release
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+before_build:
+- cmd: nuget restore
+build:
+  publish_nuget: true
+  parallel: true
+  verbosity: minimal
+for:
+-
+  branches:
+    only:
+    - master
+
+  deploy:
+  - provider: GitHub
+    auth_token:
+      secure: rcCwQSqZnKqRbc012jkvKtUz3/771EcE/Ce/2yL1IA9vhvirOdAmCGxG2yFocFjv
+    draft: true
+  - provider: NuGet
+    api_key:
+      secure: Xf37hl3mjjSlD3nyEpdUO9wOfyPU3z1pHqq41WnP0jqviNFJo6FpKC3hOIjwLRb4
