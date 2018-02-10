@@ -53,20 +53,6 @@ namespace phirSOFT.SettingsService
             }
         }
 
-        private async Task<(object, Type)> ConstructCacheEntry(string key, Type type)
-        {
-            var value = await GetSettingInternalAsync(key, type).ConfigureAwait(false);
-            return (value, type);
-        }
-
-        /// <summary>
-        ///     Retrives the value of a setting from the actual settings service.
-        /// </summary>
-        /// <param name="key">The key of the setting.</param>
-        /// <param name="type">The type of the setting</param>
-        /// <returns>The setting with the given key.</returns>
-        protected abstract Task<object> GetSettingInternalAsync(string key, Type type);
-
 
         /// <inheritdoc />
         public async Task SetSettingAsync(string key, object value, Type type)
@@ -193,6 +179,20 @@ namespace phirSOFT.SettingsService
                 _valuesCache.Clear();
             }
         }
+
+        private async Task<(object, Type)> ConstructCacheEntry(string key, Type type)
+        {
+            var value = await GetSettingInternalAsync(key, type).ConfigureAwait(false);
+            return (value, type);
+        }
+
+        /// <summary>
+        ///     Retrives the value of a setting from the actual settings service.
+        /// </summary>
+        /// <param name="key">The key of the setting.</param>
+        /// <param name="type">The type of the setting</param>
+        /// <returns>The setting with the given key.</returns>
+        protected abstract Task<object> GetSettingInternalAsync(string key, Type type);
 
         /// <summary>
         ///     Performs the actual store operation.

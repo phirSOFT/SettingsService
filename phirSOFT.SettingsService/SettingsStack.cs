@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -10,9 +9,9 @@ namespace phirSOFT.SettingsService
     /// <summary>
     ///     Provides a settings service that retrives settings from multiple sources.
     /// </summary>
-    public class SettingsStack : Collection<IReadOnlySettingsService> ,ISettingsService
+    public class SettingsStack : Collection<IReadOnlySettingsService>, ISettingsService
     {
-      /// <inheritdoc />
+        /// <inheritdoc />
         /// <summary>
         ///     Creates a instance aof a <see cref="T:phirSOFT.SettingsService.SettingsStack" />, with a given set of
         ///     <see cref="T:phirSOFT.SettingsService.IReadOnlySettingsService" />
@@ -21,10 +20,7 @@ namespace phirSOFT.SettingsService
         /// <param name="settingsServices">The initial set of <see cref="T:phirSOFT.SettingsService.IReadOnlySettingsService" />s.</param>
         public SettingsStack(IEnumerable<IReadOnlySettingsService> settingsServices)
         {
-            foreach (var readOnlySettingsService in settingsServices)
-            {
-                Add(readOnlySettingsService);
-            }
+            foreach (var readOnlySettingsService in settingsServices) Add(readOnlySettingsService);
         }
 
         /// <summary>
