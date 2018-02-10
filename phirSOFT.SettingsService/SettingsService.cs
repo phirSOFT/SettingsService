@@ -1,9 +1,18 @@
-﻿using System.Threading.Tasks;
-
-namespace phirSOFT.SettingsService
+﻿namespace phirSOFT.SettingsService
 {
+    /// <summary>
+    ///     Provides extension methods for an <see cref="ISettingsService" />.
+    /// </summary>
     public static class SettingsService
     {
-        public static ReadOnlySettingsService AsReadOnly(this IReadOnlySettingsService service) => new ReadOnlySettingsService(service);
+        /// <summary>
+        ///     Wraps an <see cref="IReadOnlySettingsService" /> in an read only instance.
+        /// </summary>
+        /// <param name="service">The service to wrap.</param>
+        /// <returns>A pure read only settings service.</returns>
+        public static IReadOnlySettingsService AsReadOnly(this IReadOnlySettingsService service)
+        {
+            return !(service is ISettingsService) ? service : new ReadOnlySettingsService(service);
+        }
     }
 }

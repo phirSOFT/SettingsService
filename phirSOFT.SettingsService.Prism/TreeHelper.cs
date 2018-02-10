@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace phirSOFT.SettingsService.Prism
 {
     public static class TreeHelper
     {
-        public static ICollection<T> BuildTree<T>(this IEnumerable<ISettingPage> settingPages, Func<ITreeNode, T> modelFactory)
+        public static ICollection<T> BuildTree<T>(this IEnumerable<ISettingPage> settingPages,
+            Func<ITreeNode, T> modelFactory)
             where T : class, ITreeModel<T>
         {
             var rootNodes = new Collection<T>();
@@ -21,26 +20,21 @@ namespace phirSOFT.SettingsService.Prism
             Func<ITreeNode, T> modelFactory) where T : class, ITreeModel<T>
         {
             foreach (var settingPage in settingPages)
-            {
                 using (var enumerator = settingPage.Path.GetEnumerator())
                 {
-                    if (enumerator.MoveNext())
-                    {
-                        tree.Insert(enumerator, settingPage, modelFactory);
-                    }
+                    if (enumerator.MoveNext()) tree.Insert(enumerator, settingPage, modelFactory);
                 }
-
-            }
         }
 
-        public static void Insert<T>(this ICollection<T> tree, IEnumerator<ITreeNode> settingPages, ISettingPage page, Func<ITreeNode, T> modelFactory) where T : class, ITreeModel<T>
+        public static void Insert<T>(this ICollection<T> tree, IEnumerator<ITreeNode> settingPages, ISettingPage page,
+            Func<ITreeNode, T> modelFactory) where T : class, ITreeModel<T>
         {
             while (true)
             {
                 var currentNode = settingPages.Current;
                 var child = tree.FirstOrDefault(model => model.Node.Equals(currentNode));
 
-                if (child ==null)
+                if (child == null)
                 {
                     child = modelFactory(currentNode);
                     tree.Add(child);
@@ -51,6 +45,7 @@ namespace phirSOFT.SettingsService.Prism
                     tree = child.Children;
                     continue;
                 }
+
                 child.SettingPage = page;
                 break;
             }

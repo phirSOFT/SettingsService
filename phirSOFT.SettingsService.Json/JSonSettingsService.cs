@@ -34,8 +34,6 @@ namespace phirSOFT.SettingsService.Json
         {
             using (await _readerWriterLock.WriterLockAsync())
             {
-                var serializer = new JsonSerializer();
-
                 if (!File.Exists(_filename))
                     return;
 
@@ -50,14 +48,16 @@ namespace phirSOFT.SettingsService.Json
                         switch ((string) reader.Value)
                         {
                             case "types":
-                                await ReadDictionary(reader, serializer, _types, key => typeof(Type));
+                                await ReadDictionary(reader, _types, key => typeof(Type));
                                 break;
                             case "values":
-                                await ReadDictionary(reader, serializer, _values, key => _types[key]);
+                                await ReadDictionary(reader, _values, key => _types[key]);
                                 break;
                             case "defaults":
-                                await ReadDictionary(reader, serializer, _defaultValues, key => _types[key]);
+                                await ReadDictionary(reader, _defaultValues, key => _types[key]);
                                 break;
+                            default:
+                                throw new JsonSerializationException($"Unknown entry : {(string) reader.Value}");
                         }
                     }
                 }
@@ -86,7 +86,7 @@ namespace phirSOFT.SettingsService.Json
             writer.WriteEndObject();
         }
 
-        private static async Task ReadDictionary<T>(JsonReader reader, JsonSerializer serializer,
+        private static async Task ReadDictionary<T>(JsonReader reader,
             IDictionary<string, T> dictionary,
             Func<string, Type> typeResover)
         {
@@ -103,11 +103,10 @@ namespace phirSOFT.SettingsService.Json
                 if (!await reader.ReadAsync().ConfigureAwait(false))
                     throw new JsonSerializationException();
 
-                
+
                 var value = await JToken.ReadFromAsync(reader);
-                
-                
-                
+
+
                 dictionary.Add(key, (T) value.ToObject(typeResover(key)));
             }
         }

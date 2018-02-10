@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
@@ -27,8 +23,6 @@ namespace phirSOFT.SettingsService.Json.Test
             Assert.AreEqual(0, await service2.GetSettingAsync<int>("integer"));
             Assert.AreEqual("string", await service2.GetSettingAsync<string>("string"));
             Assert.True(await service2.IsRegisterdAsync("object"));
-
-
         }
     }
 }

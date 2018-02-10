@@ -11,25 +11,31 @@ namespace phirSOFT.SettingsService
     /// </summary>
     public abstract class SettingsServiceBase : ISettingsService
     {
+        /// <inheritdoc />
         public async Task<T> GetSettingAsync<T>(string key)
         {
             return (T) await GetSettingAsync(key, typeof(T));
         }
 
+        /// <inheritdoc />
         public abstract Task<object> GetSettingAsync(string key, Type type);
 
+        /// <inheritdoc />
         public Task SetSettingAsync<T>(string key, T value)
         {
             return SetSettingAsync(key, value, typeof(T));
         }
 
+        /// <inheritdoc />
         public Task SetSettingAsync(string key, object value)
         {
             return SetSettingAsync(key, value, value.GetType());
         }
 
+        /// <inheritdoc />
         public abstract Task SetSettingAsync(string key, object value, Type type);
 
+        /// <inheritdoc />
         public Task RegisterSettingAsync<T>(string key)
         {
             var type = typeof(T);
@@ -38,6 +44,7 @@ namespace phirSOFT.SettingsService
             return RegisterSettingAsync(key, defaultValue, defaultValue, type);
         }
 
+        /// <inheritdoc />
         public Task RegisterSettingAsync(string key, Type type)
         {
             var defaultValue = GetDefaultValue(type);
@@ -45,26 +52,31 @@ namespace phirSOFT.SettingsService
             return RegisterSettingAsync(key, defaultValue, defaultValue, type);
         }
 
+        /// <inheritdoc />
         public Task RegisterSettingAsync<T>(string key, T defaultValue)
         {
             return RegisterSettingAsync(key, defaultValue, defaultValue, typeof(T));
         }
 
+        /// <inheritdoc />
         public Task RegisterSettingAsync(string key, object defaultValue)
         {
             return RegisterSettingAsync(key, defaultValue, defaultValue, defaultValue.GetType());
         }
 
+        /// <inheritdoc />
         public Task RegisterSettingAsync(string key, object defaultValue, Type type)
         {
             return RegisterSettingAsync(key, defaultValue, defaultValue, type);
         }
 
+        /// <inheritdoc />
         public Task RegisterSettingAsync<T>(string key, T defaultValue, T initialValue)
         {
             return RegisterSettingAsync(key, defaultValue, initialValue, typeof(T));
         }
 
+        /// <inheritdoc />
         public Task RegisterSettingAsync(string key, object defaultValue, object initialValue)
         {
             var defaultType = defaultValue.GetType().GetTypeInfo();
@@ -80,13 +92,19 @@ namespace phirSOFT.SettingsService
             return RegisterSettingAsync(key, defaultValue, initialValue, type);
         }
 
+        /// <inheritdoc />
         public abstract Task RegisterSettingAsync(string key, object defaultValue, object initialValue, Type type);
 
+        /// <inheritdoc />
         public abstract Task UnregisterSettingAsync(string key);
 
+        /// <inheritdoc />
         public abstract Task<bool> IsRegisterdAsync(string key);
 
+        /// <inheritdoc />
         public abstract Task StoreAsync();
+
+        /// <inheritdoc />
         public abstract Task DiscardAsync();
     }
 }

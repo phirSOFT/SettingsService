@@ -46,18 +46,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
     <Reference Include="Unity.Abstractions, Version=3.1.2.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.5.5\lib\net45\Unity.Abstractions.dll</HintPath>
     </Reference>
@@ -95,10 +87,6 @@
     <ProjectReference Include="..\phirSOFT.SettingsService.Prism\phirSOFT.SettingsService.Prism.csproj">
       <Project>{0b185839-665e-4d0e-870e-049d910e75be}</Project>
       <Name>phirSOFT.SettingsService.Prism</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\phirSOFT.SettingsService\phirSOFT.SettingsService.csproj">
-      <Project>{1be70641-6f1f-49fa-93bd-bde627fb22b1}</Project>
-      <Name>phirSOFT.SettingsService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

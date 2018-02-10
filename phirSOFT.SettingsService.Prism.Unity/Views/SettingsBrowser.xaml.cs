@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
 
 namespace phirSOFT.SettingsService.Prism.Unity.Views
 {
+    /// <inheritdoc cref="UserControl" />
     /// <summary>
-    /// Interaction logic for SettingsBrowser.xaml
+    ///     Interaction logic for SettingsBrowser.xaml
     /// </summary>
-    public partial class SettingsBrowser : UserControl
+    public partial class SettingsBrowser
     {
         public SettingsBrowser()
         {
