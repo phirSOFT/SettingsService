@@ -18,6 +18,12 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
+        public Task<T> GetSettingAsync<T>(string key)
+        {
+            return _service.GetSettingAsync<T>(key);
+        }
+
+        /// <inheritdoc />
         public Task<object> GetSettingAsync(string key, Type type)
         {
             return _service.GetSettingAsync(key, type);
@@ -27,12 +33,6 @@ namespace phirSOFT.SettingsService
         public Task<bool> IsRegisterdAsync(string key)
         {
             return _service.IsRegisterdAsync(key);
-        }
-
-        /// <inheritdoc />
-        public Task<T> GetSettingAsync<T>(string key)
-        {
-            return _service.GetSettingAsync<T>(key);
         }
     }
 }
