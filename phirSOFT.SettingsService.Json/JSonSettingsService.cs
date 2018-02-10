@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Nito.AsyncEx;
 
 namespace phirSOFT.SettingsService.Json
@@ -99,8 +100,15 @@ namespace phirSOFT.SettingsService.Json
 
                 var key = reader.Value as string;
 
-                var value = (T) serializer.Deserialize(reader, typeResover(key));
-                dictionary.Add(key, value);
+                if (!await reader.ReadAsync().ConfigureAwait(false))
+                    throw new JsonSerializationException();
+
+                
+                var value = await JToken.ReadFromAsync(reader);
+                
+                
+                
+                dictionary.Add(key, (T) value.ToObject(typeResover(key)));
             }
         }
 
