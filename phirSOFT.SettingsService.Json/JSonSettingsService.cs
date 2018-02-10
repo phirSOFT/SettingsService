@@ -30,87 +30,6 @@ namespace phirSOFT.SettingsService.Json
             _initializerTask = Initialize();
         }
 
-        private async Task Initialize()
-        {
-            using (await _readerWriterLock.WriterLockAsync())
-            {
-                if (!File.Exists(_filename))
-                    return;
-
-                using (var fs = new StreamReader(new FileStream(_filename, FileMode.Open, FileAccess.Read)))
-                {
-                    var reader = new JsonTextReader(fs);
-
-                    while (await reader.ReadAsync().ConfigureAwait(false))
-                    {
-                        if (reader.TokenType != JsonToken.PropertyName) continue;
-
-                        switch ((string) reader.Value)
-                        {
-                            case "types":
-                                await ReadDictionary(reader, _types, key => typeof(Type));
-                                break;
-                            case "values":
-                                await ReadDictionary(reader, _values, key => _types[key]);
-                                break;
-                            case "defaults":
-                                await ReadDictionary(reader, _defaultValues, key => _types[key]);
-                                break;
-                            default:
-                                throw new JsonSerializationException($"Unknown entry : {(string) reader.Value}");
-                        }
-                    }
-                }
-            }
-        }
-
-        public static async Task<JsonSettingsService> Create(string filename)
-        {
-            var service = new JsonSettingsService(filename);
-            await service._initializerTask.ConfigureAwait(false);
-            return service;
-        }
-
-        private static async Task WriteDictionaryAsync<T>(JsonWriter writer, JsonSerializer serializer,
-            IDictionary<string, T> dictionary, string key, Func<string, Type> typeResover)
-        {
-            await writer.WritePropertyNameAsync(key).ConfigureAwait(false);
-            await writer.WriteStartObjectAsync().ConfigureAwait(false);
-
-            foreach (var value in dictionary)
-            {
-                await writer.WritePropertyNameAsync(value.Key);
-                serializer.Serialize(writer, value.Value, typeResover(value.Key));
-            }
-
-            writer.WriteEndObject();
-        }
-
-        private static async Task ReadDictionary<T>(JsonReader reader,
-            IDictionary<string, T> dictionary,
-            Func<string, Type> typeResover)
-        {
-            while (await reader.ReadAsync().ConfigureAwait(false))
-            {
-                if (reader.TokenType == JsonToken.EndObject)
-                    return;
-
-                if (reader.TokenType != JsonToken.PropertyName)
-                    continue;
-
-                var key = reader.Value as string;
-
-                if (!await reader.ReadAsync().ConfigureAwait(false))
-                    throw new JsonSerializationException();
-
-
-                var value = await JToken.ReadFromAsync(reader);
-
-
-                dictionary.Add(key, (T) value.ToObject(typeResover(key)));
-            }
-        }
-
         public override async Task<object> GetSettingAsync(string key, Type type)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
@@ -194,6 +113,87 @@ namespace phirSOFT.SettingsService.Json
                 _defaultValues.Clear();
                 _types.Clear();
                 await Initialize().ConfigureAwait(false);
+            }
+        }
+
+        private async Task Initialize()
+        {
+            using (await _readerWriterLock.WriterLockAsync())
+            {
+                if (!File.Exists(_filename))
+                    return;
+
+                using (var fs = new StreamReader(new FileStream(_filename, FileMode.Open, FileAccess.Read)))
+                {
+                    var reader = new JsonTextReader(fs);
+
+                    while (await reader.ReadAsync().ConfigureAwait(false))
+                    {
+                        if (reader.TokenType != JsonToken.PropertyName) continue;
+
+                        switch ((string) reader.Value)
+                        {
+                            case "types":
+                                await ReadDictionary(reader, _types, key => typeof(Type));
+                                break;
+                            case "values":
+                                await ReadDictionary(reader, _values, key => _types[key]);
+                                break;
+                            case "defaults":
+                                await ReadDictionary(reader, _defaultValues, key => _types[key]);
+                                break;
+                            default:
+                                throw new JsonSerializationException($"Unknown entry : {(string) reader.Value}");
+                        }
+                    }
+                }
+            }
+        }
+
+        public static async Task<JsonSettingsService> Create(string filename)
+        {
+            var service = new JsonSettingsService(filename);
+            await service._initializerTask.ConfigureAwait(false);
+            return service;
+        }
+
+        private static async Task WriteDictionaryAsync<T>(JsonWriter writer, JsonSerializer serializer,
+            IDictionary<string, T> dictionary, string key, Func<string, Type> typeResover)
+        {
+            await writer.WritePropertyNameAsync(key).ConfigureAwait(false);
+            await writer.WriteStartObjectAsync().ConfigureAwait(false);
+
+            foreach (var value in dictionary)
+            {
+                await writer.WritePropertyNameAsync(value.Key);
+                serializer.Serialize(writer, value.Value, typeResover(value.Key));
+            }
+
+            writer.WriteEndObject();
+        }
+
+        private static async Task ReadDictionary<T>(JsonReader reader,
+            IDictionary<string, T> dictionary,
+            Func<string, Type> typeResover)
+        {
+            while (await reader.ReadAsync().ConfigureAwait(false))
+            {
+                if (reader.TokenType == JsonToken.EndObject)
+                    return;
+
+                if (reader.TokenType != JsonToken.PropertyName)
+                    continue;
+
+                var key = reader.Value as string;
+
+                if (!await reader.ReadAsync().ConfigureAwait(false))
+                    throw new JsonSerializationException();
+
+
+                var value = await JToken.ReadFromAsync(reader);
+
+
+                dictionary.Add(key, (T) value.ToObject(typeResover(key)));
             }
         }
     }
