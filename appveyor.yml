@@ -23,6 +23,7 @@ build:
   parallel: true
   verbosity: minimal
 for:
+-
   branches:
     only:
     - master
