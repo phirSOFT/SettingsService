@@ -11,6 +11,14 @@ namespace phirSOFT.SettingsService
         /// <summary>
         ///     Gets the value of setting with a specific key.
         /// </summary>
+        /// <typeparam name="T">The type of the setting to retrieve</typeparam>
+        /// <param name="key">The key of the setting</param>
+        /// <returns>The value of the setting, if its present in this service</returns>
+        Task<T> GetSettingAsync<T>(string key);
+
+        /// <summary>
+        ///     Gets the value of setting with a specific key.
+        /// </summary>
         /// <param name="key">The key of the setting</param>
         /// <param name="type">The type of the setting to retrieve</param>
         /// <returns>The value of the setting, if its present in this service</returns>
