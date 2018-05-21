@@ -1,38 +1,40 @@
-version: 0.1.{build}
-image: Visual Studio 2017
 skip_tags: true
+image: Visual Studio 2017
 configuration: Release
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-  assembly_informational_version: '{version}'
+
+install:
+  - cinst gitversion.portable
+  - nuget restore
+  - ps: gitversion /l console /output buildserver
+
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
-  assembly_version: '{version}'
-  file_version: '{version}'
-  informational_version: '{version}'
-before_build:
-- cmd: nuget restore
+  version: $(GitVersion_FullSemVer)
+  package_version: $(GitVersion_FullSemVer)
+  assembly_version: $(GitVersion_AssemblySemVer)
+  file_version: $(GitVersion_AssemblySemVer)
+  informational_version: $(GitVersion_FullSemVer)
+
+on_failure:
+  - ps: 7z a "WorkingTree.zip"
+  - ps: Push-AppveyorArtifact WorkingTree.zip
+
 build:
   publish_nuget: true
+  publish_nuget_symbols: true
+  include_nuget_references: true
   parallel: true
   verbosity: minimal
-for:
--
-  branches:
-    only:
-    - master
 
-  deploy:
-  - provider: GitHub
-    auth_token:
-      secure: rcCwQSqZnKqRbc012jkvKtUz3/771EcE/Ce/2yL1IA9vhvirOdAmCGxG2yFocFjv
-    draft: true
-  - provider: NuGet
-    api_key:
-      secure: Xf37hl3mjjSlD3nyEpdUO9wOfyPU3z1pHqq41WnP0jqviNFJo6FpKC3hOIjwLRb4
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: rcCwQSqZnKqRbc012jkvKtUz3/771EcE/Ce/2yL1IA9vhvirOdAmCGxG2yFocFjv
+  on:
+    branch: master
+- provider: NuGet
+  api_key:
+    secure: Xf37hl3mjjSlD3nyEpdUO9wOfyPU3z1pHqq41WnP0jqviNFJo6FpKC3hOIjwLRb4
+  on:
+    branch: master
