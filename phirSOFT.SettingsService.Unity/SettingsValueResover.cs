@@ -22,7 +22,7 @@ namespace phirSOFT.SettingsService.Unity
 
         public object Resolve(IBuilderContext context)
         {
-            var service = context.Container.Resolve<ISettingsService>(_serviceInstance);
+            var service = context.Container.Resolve<IReadOnlySettingsService>(_serviceInstance);
             Task<object> resultTask = service.GetSettingAsync(_settingsKey, _settingsType);
             resultTask.WaitAndUnwrapException();
             return resultTask.Result;
