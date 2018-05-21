@@ -2,6 +2,7 @@
 
 namespace phirSOFT.SettingsService.Unity
 {
+    /// <inheritdoc />
     /// <summary>
     ///     Use this attribute, to annotate, that the property or parameter is resolved from a unity container.
     /// </summary>

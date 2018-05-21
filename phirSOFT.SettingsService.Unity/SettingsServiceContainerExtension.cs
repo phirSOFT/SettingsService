@@ -3,7 +3,7 @@ using Unity.Policy;
 
 namespace phirSOFT.SettingsService.Unity
 {
-    internal class SettingsServiceContainerExtension : UnityContainerExtension
+    public class SettingsServiceContainerExtension : UnityContainerExtension
     {
         protected override void Initialize()
         {
