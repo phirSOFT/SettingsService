@@ -90,7 +90,7 @@ namespace phirSOFT.SettingsService.Json
                 var serializer = new JsonSerializer();
                 using (var fs = new StreamWriter(new FileStream(_filename, FileMode.Create, FileAccess.ReadWrite)))
                 {
-                    var writer = new JsonTextWriter(fs);
+                    var writer = new JsonTextWriter(fs) {Formatting = Formatting.Indented};
                     await writer.WriteStartObjectAsync().ConfigureAwait(false);
 
                     await WriteDictionaryAsync(writer, serializer, _types, "types", key => typeof(Type))
