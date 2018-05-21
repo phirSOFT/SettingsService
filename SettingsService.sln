@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "phirSOFT.SettingsService.Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "phirSOFT.SettingsService.Json.Test", "phirSOFT.SettingsService.Json.Test\phirSOFT.SettingsService.Json.Test.csproj", "{D3A29052-D926-4275-9BBC-A9521877101B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "phirSOFT.SettingsService.Unity", "phirSOFT.SettingsService.Unity\phirSOFT.SettingsService.Unity.csproj", "{EBC4F54A-13BF-442D-B746-C9B71F4AB2EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{D3A29052-D926-4275-9BBC-A9521877101B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3A29052-D926-4275-9BBC-A9521877101B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3A29052-D926-4275-9BBC-A9521877101B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBC4F54A-13BF-442D-B746-C9B71F4AB2EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBC4F54A-13BF-442D-B746-C9B71F4AB2EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBC4F54A-13BF-442D-B746-C9B71F4AB2EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBC4F54A-13BF-442D-B746-C9B71F4AB2EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
