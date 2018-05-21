@@ -2,6 +2,9 @@ skip_tags: true
 image: Visual Studio 2017
 configuration: Release
 
+skip_commits:
+  message: /\[WIP\]/
+
 install:
   - cinst gitversion.portable
   - nuget restore
