@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1.0</Version>
+    <Authors>phirSOFT</Authors>
+    <Product>phirSOFT.SettingsService</Product>
+    <PackageLicenseUrl>https://github.com/phirSOFT/SettingsService/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/phirSOFT/SettingsService</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
