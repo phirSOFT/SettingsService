@@ -4,8 +4,8 @@ using Unity.Policy;
 namespace phirSOFT.SettingsService.Unity
 {
     /// <summary>
-    /// Provides a container extension, that will enable resolve strategies for settings.
-    /// Add this extension to your container to make the <see cref="SettingValueAttribute"/> work.
+    ///     Provides a container extension, that will enable resolve strategies for settings.
+    ///     Add this extension to your container to make the <see cref="SettingValueAttribute" /> work.
     /// </summary>
     public class SettingsServiceContainerExtension : UnityContainerExtension
     {
