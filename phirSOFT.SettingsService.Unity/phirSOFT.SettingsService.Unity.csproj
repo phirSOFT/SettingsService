@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Nito.AsyncEx.Context" Version="1.0.4" />
     <PackageReference Include="Unity" Version="5.8.6" />
   </ItemGroup>
 
