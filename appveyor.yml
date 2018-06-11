@@ -18,6 +18,13 @@ dotnet_csproj:
   assembly_version: $(GitVersion_AssemblySemVer)
   file_version: $(GitVersion_AssemblySemVer)
   informational_version: $(GitVersion_FullSemVer)
+  
+assembly_info:
+   patch: true
+   file: '**\AssemblyInfo.*'
+   assembly_version: $(GitVersion_AssemblySemVer)
+   assembly_file_version: $(GitVersion_AssemblySemVer)
+   assembly_informational_version: $(GitVersion_FullSemVer)
 
 on_failure:
   - ps: 7z a "WorkingTree.zip"
