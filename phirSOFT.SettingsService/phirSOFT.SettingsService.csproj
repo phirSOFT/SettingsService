@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>D:\Repos\SettingsService\phirSOFT.SettingsService\phirSOFT.SettingsService.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard1.3\phirSOFT.SettingsService.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

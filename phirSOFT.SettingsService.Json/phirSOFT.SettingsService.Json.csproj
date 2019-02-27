@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>D:\Repos\SettingsService\phirSOFT.SettingsService.Json\phirSOFT.SettingsService.Json.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard1.3\phirSOFT.SettingsService.Json.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
