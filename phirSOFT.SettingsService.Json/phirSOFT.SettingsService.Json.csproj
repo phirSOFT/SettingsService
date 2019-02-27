@@ -8,6 +8,10 @@
     <PackageLicenseUrl>https://github.com/phirSOFT/SettingsService/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>D:\Repos\SettingsService\phirSOFT.SettingsService.Json\phirSOFT.SettingsService.Json.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
