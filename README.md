@@ -20,7 +20,7 @@ There a some setting service implementations already, that partially allow integ
 | - | - | - | - |
 | Json           | [![nuget](https://img.shields.io/nuget/v/phirSOFT.SettingsService.Json.svg)](https://www.nuget.org/packages/phirSOFT.SettingsService.Json/) | [phirsoft/SettingsService.Json](https://github.com/phirSOFT/SettingsService.Json) | |
 | Windows Registry | [![nuget](https://img.shields.io/nuget/v/phirSOFT.SettingsService.Registry.svg)](https://www.nuget.org/packages/phirSOFT.SettingsService.Json/) | [phirsoft/SettingsService.Registry](https://github.com/phirSOFT/SettingsService.Registry) | Requires a custom RegistryAdapter for non primitive types |
-| Ini file | _not published yet_ | [phirsoft/SettingsService.Ini](https://github.com/phirSOFT/SettingsService.Registry) | Requires a custom adapter for string serialization and deserialization |
+| Ini file | _not published yet_ | [phirsoft/SettingsService.Ini](https://github.com/phirSOFT/SettingsService.Ini) | Requires a custom adapter for string serialization and deserialization |
 
 ## Example
 Assume you are writing a WebClient for an application. You want the user to be able to configure a timeout. 
