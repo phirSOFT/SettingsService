@@ -52,7 +52,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet push'
-  condition: and(succeeded(), $(Release.Publish))
+  condition: and(succeeded(), variables[Release.Publish])
   inputs:
     command: push
     nuGetFeedType: external
@@ -60,7 +60,7 @@ steps:
 
 - task: GitHubRelease@0
   displayName: 'GitHub release (create)'
-  condition: and(succeeded(), $(Release.Publish))
+  condition: and(succeeded(), variables[Release.Publish])
   inputs:
     gitHubConnection: phirSOFT.SettingsService
     title: '$(GitVersion.FullSemVer)'
