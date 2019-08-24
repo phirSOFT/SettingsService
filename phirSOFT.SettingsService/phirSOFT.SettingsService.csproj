@@ -11,6 +11,7 @@
     <Authors>phirSOFT</Authors>
     <Description>The settings service is a library that provides a simlple interface to retrieve settings from different sources. The interface is designed for applications using the IoC (Inversion of Control) pattern, but it can also be used in applications. A setting can be of any type (although simple types like structs and string are recommended) and is identified by an unique key.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <UseFullSemVer>true</UseFullSemVer>
   </PropertyGroup>
 
   <ItemGroup>
