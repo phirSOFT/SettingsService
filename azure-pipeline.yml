@@ -42,6 +42,7 @@ steps:
      **\*.nupkg
      **\*.snupkg
     TargetFolder: '$(build.artifactstagingdirectory)'
+    flattenFolders: true
   condition: succeededOrFailed()
 
 - task: DotNetCoreCLI@2
