@@ -9,13 +9,10 @@
     <Version>0.0.1</Version>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.3\phirSOFT.SettingsService.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.3\phirSOFT.SettingsService.xml</DocumentationFile>
-  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Nito.AsyncEx.Coordination" Version="5.0.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\phirSOFT.SettingsService.Abstractions\phirSOFT.SettingsService.Abstractions.csproj" />
