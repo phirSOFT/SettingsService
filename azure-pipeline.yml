@@ -1,6 +1,18 @@
 pool:
   vmImage: 'windows-2019'
 
+trigger:
+- master
+- release/*
+- hotfix/*
+- feature
+
+pr:
+- master
+- release/*
+- hotfix/*
+- feature
+
 variables:
   Release.IsPrerelease: $[or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/'))]
   Release.Publish: $[or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))]
