@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using phirSOFT.SettingsService.Abstractions;
 
 namespace phirSOFT.SettingsService
 {
@@ -24,15 +25,9 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
-        public Task<bool> IsRegisterdAsync(string key)
+        public Task<bool> IsRegisteredAsync(string key)
         {
-            return _service.IsRegisterdAsync(key);
-        }
-
-        /// <inheritdoc />
-        public Task<T> GetSettingAsync<T>(string key)
-        {
-            return _service.GetSettingAsync<T>(key);
+            return _service.IsRegisteredAsync(key);
         }
     }
 }

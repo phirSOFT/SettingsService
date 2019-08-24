@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using phirSOFT.SettingsService.Abstractions;
 
 namespace phirSOFT.SettingsService
 {
@@ -49,7 +50,7 @@ namespace phirSOFT.SettingsService
                 {
                     if (!enumerator.MoveNext())
                         throw new KeyNotFoundException();
-                } while (!await enumerator.Current.IsRegisterdAsync(key));
+                } while (!await enumerator.Current.IsRegisteredAsync(key));
 
                 return await enumerator.Current.GetSettingAsync(key, type);
             }
@@ -86,7 +87,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc />
-        public async Task<bool> IsRegisterdAsync(string key)
+        public async Task<bool> IsRegisteredAsync(string key)
         {
             using (var enumerator = GetEnumerator())
             {
@@ -94,7 +95,7 @@ namespace phirSOFT.SettingsService
                 {
                     if (!enumerator.MoveNext())
                         return false;
-                } while (!await enumerator.Current.IsRegisterdAsync(key));
+                } while (!await enumerator.Current.IsRegisteredAsync(key));
 
                 return true;
             }

@@ -1,15 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "phirSOFT.SettingsService", "phirSOFT.SettingsService\phirSOFT.SettingsService.csproj", "{1BE70641-6F1F-49FA-93BD-BDE627FB22B1}"
 EndProject
-
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "phirSOFT.SettingsService.Abstractions", "phirSOFT.SettingsService.Abstractions\phirSOFT.SettingsService.Abstractions.csproj", "{079213BD-0975-4B46-B37B-F18AD640681B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BE70641-6F1F-49FA-93BD-BDE627FB22B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BE70641-6F1F-49FA-93BD-BDE627FB22B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BE70641-6F1F-49FA-93BD-BDE627FB22B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BE70641-6F1F-49FA-93BD-BDE627FB22B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{079213BD-0975-4B46-B37B-F18AD640681B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{079213BD-0975-4B46-B37B-F18AD640681B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{079213BD-0975-4B46-B37B-F18AD640681B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{079213BD-0975-4B46-B37B-F18AD640681B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

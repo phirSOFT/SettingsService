@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace phirSOFT.SettingsService
+namespace phirSOFT.SettingsService.Abstractions
 {
     /// <inheritdoc />
     /// <summary>
     ///     Provides the basic interface of a settings service to retrive and store settings.
     ///     All settings can be changed virtually and are only stored persistent, if
-    ///     <see cref="M:phirSOFT.SettingsService.ISettingsService.StoreAsync" /> is called.
+    ///     <see cref="M:phirSOFT.SettingsService.Abstractions.ISettingsService.StoreAsync" /> is called.
     /// </summary>
     /// <remarks>
     ///     Though it might not required, most implementations will only accept serializable settings type.
