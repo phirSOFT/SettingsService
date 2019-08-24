@@ -5,7 +5,13 @@ VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "phirSOFT.SettingsService", "phirSOFT.SettingsService\phirSOFT.SettingsService.csproj", "{1BE70641-6F1F-49FA-93BD-BDE627FB22B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "phirSOFT.SettingsService.Abstractions", "phirSOFT.SettingsService.Abstractions\phirSOFT.SettingsService.Abstractions.csproj", "{079213BD-0975-4B46-B37B-F18AD640681B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "phirSOFT.SettingsService.Abstractions", "phirSOFT.SettingsService.Abstractions\phirSOFT.SettingsService.Abstractions.csproj", "{079213BD-0975-4B46-B37B-F18AD640681B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ci-Pipeline", "Ci-Pipeline", "{8210544E-8E15-4933-AEE1-DC348656773D}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipeline.yml = azure-pipeline.yml
+		GitVersion.yml = GitVersion.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
