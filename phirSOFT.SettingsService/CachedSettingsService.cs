@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Nito.AsyncEx;
+using phirSOFT.SettingsService.Abstractions;
 
 namespace phirSOFT.SettingsService
 {
@@ -50,6 +51,15 @@ namespace phirSOFT.SettingsService
                     internalKey => new CacheEntry(() => ConstructCacheEntry(internalKey, type)));
 
                 return cacheEntry.value;
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> IsRegisteredAsync(string key)
+        {
+            using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
+            {
+                return _valuesCache.ContainsKey(key) || await IsRegisterdInternalAsync(key);
             }
         }
 
@@ -107,15 +117,6 @@ namespace phirSOFT.SettingsService
 
                 _changedKeys.Remove(key);
                 _insertedKeys.TryRemove(key, out _);
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task<bool> IsRegisterdAsync(string key)
-        {
-            using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
-            {
-                return _valuesCache.ContainsKey(key) || await IsRegisterdInternalAsync(key);
             }
         }
 
