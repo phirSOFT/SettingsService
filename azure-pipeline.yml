@@ -1,0 +1,56 @@
+pool:
+  vmImage: 'windows-2019'
+
+variables:
+  Release.IsPrerelease: $[or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/'))]
+  Release.Publish: $[or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))]
+
+steps:
+- task: gittools.gitversion.gitversion-task.GitVersion@5
+  displayName: GitVersion
+
+- task: UseDotNet@2
+  displayName: 'Use .Net Core sdk '
+  inputs:
+    useGlobalJson: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
+  inputs:
+    command: test
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: |
+     **\*.nupkg
+     **\*.snupkg
+    TargetFolder: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet push'
+  inputs:
+    command: push
+    publishVstsFeed: '0a220c4b-5ab8-47bf-baf0-fdfb139b70c4/faf9ee1b-b648-43cb-9a50-c60ae34d9adf'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet push'
+  condition: and(succeeded(), $(Release.Publish))
+  inputs:
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: 'Nuget (SettingService)'
+
+- task: GitHubRelease@0
+  displayName: 'GitHub release (create)'
+  condition: and(succeeded(), $(Release.Publish))
+  inputs:
+    gitHubConnection: phirSOFT.SettingsService
+    title: '$(GitVersion.FullSemVer)'
+    releaseNotesFile: ReleaseNotes.md
+    isPreRelease: $(Release.IsPrerelease)
