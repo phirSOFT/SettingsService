@@ -14,8 +14,9 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <UseFullSemVer>true</UseFullSemVer>
+    <UseFullSemVerForNuGet >true</UseFullSemVerForNuGet>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);NU5105</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
