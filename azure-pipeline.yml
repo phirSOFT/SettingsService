@@ -62,7 +62,7 @@ steps:
   condition: and(succeeded(), variables['Release.Publish'])
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;$(Build.ArtifactStagingDirectory)/**/*.snupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;'
     nuGetFeedType: 'external'
     publishFeedCredentials: 'Nuget (SettingService)'
 
