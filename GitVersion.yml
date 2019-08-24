@@ -9,6 +9,7 @@ branches:
     mode: ContinuousDelivery
   release:
     mode: ContinuousDeployment
+    tag: pre
 ignore:
   sha: []
 merge-message-formats: {}
