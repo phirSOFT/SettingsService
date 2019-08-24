@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace phirSOFT.SettingsService
+namespace phirSOFT.SettingsService.Abstractions
 {
     /// <summary>
     ///     Provides an interface for readonly settings.
@@ -17,10 +17,10 @@ namespace phirSOFT.SettingsService
         Task<object> GetSettingAsync(string key, Type type);
 
         /// <summary>
-        ///     Determines wheter a setting is present in this service.
+        ///     Determines whether a setting is present in this service.
         /// </summary>
         /// <param name="key">The key of the setting.</param>
         /// <returns>True, if the setting can be retrieved, false if not.</returns>
-        Task<bool> IsRegisterdAsync(string key);
+        Task<bool> IsRegisteredAsync(string key);
     }
 }
