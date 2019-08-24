@@ -19,8 +19,7 @@ variables:
 
 steps:
 - task: gittools.gitversion.gitversion-task.GitVersion@5
-  displayName: GitVersion
-
+  displayName: GitVersion'
 - task: UseDotNet@2
   displayName: 'Use .Net Core sdk '
   inputs:
@@ -51,6 +50,12 @@ steps:
     command: push
     publishVstsFeed: '0a220c4b-5ab8-47bf-baf0-fdfb139b70c4/faf9ee1b-b648-43cb-9a50-c60ae34d9adf'
     includesymbols: true
+
+
+- task: NuGetToolInstaller@1
+  condition: and(succeeded(), variables['Release.Publish'])
+  inputs:
+    versionSpec: '>4.9.0'
 
 - task: NuGetCommand@2
   displayName: 'Publish to NuGet.org'
