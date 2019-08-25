@@ -14,6 +14,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ci-Pipeline", "Ci-Pipeline"
 		global.json = global.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Changelog", "Changelog", "{4B680FF6-F8F4-42EB-8724-AA98E094F9EC}"
+	ProjectSection(SolutionItems) = preProject
+		Changelog.txt = Changelog.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
