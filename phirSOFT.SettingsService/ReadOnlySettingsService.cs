@@ -9,27 +9,29 @@ using phirSOFT.SettingsService.Abstractions;
 
 namespace phirSOFT.SettingsService
 {
-    /// <inheritdoc />
+    /// <summary>
+    ///     Wraps an <see cref="IReadOnlySettingsService"/> in a read only instance.
+    /// </summary>
     public class ReadOnlySettingsService : IReadOnlySettingsService
     {
         private readonly IReadOnlySettingsService _service;
 
         /// <summary>
-        ///     Wraps an <see cref="IReadOnlySettingsService" /> in an read only instance.
+        /// Initializes a new instance of the <see cref="ReadOnlySettingsService"/> class.
         /// </summary>
-        /// <param name="service">The service to wrap</param>
+        /// <param name="service">The service to wrap.</param>
         public ReadOnlySettingsService(IReadOnlySettingsService service)
         {
             _service = service;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public Task<object> GetSettingAsync(string key, Type type)
         {
             return _service.GetSettingAsync(key, type);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public Task<bool> IsRegisteredAsync(string key)
         {
             return _service.IsRegisteredAsync(key);

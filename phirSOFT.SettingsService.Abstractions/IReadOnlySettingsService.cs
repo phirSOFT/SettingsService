@@ -16,9 +16,9 @@ namespace phirSOFT.SettingsService.Abstractions
         /// <summary>
         ///     Gets the value of setting with a specific key.
         /// </summary>
-        /// <param name="key">The key of the setting</param>
-        /// <param name="type">The type of the setting to retrieve</param>
-        /// <returns>The value of the setting, if its present in this service</returns>
+        /// <param name="key">The key of the setting.</param>
+        /// <param name="type">The type of the setting to retrieve.</param>
+        /// <returns>The value of the setting, if its present in this service.</returns>
         Task<object> GetSettingAsync(string key, Type type);
 
         /// <summary>
