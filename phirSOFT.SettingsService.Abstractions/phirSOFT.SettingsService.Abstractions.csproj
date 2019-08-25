@@ -28,12 +28,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="CodeAnalysis.xml" />
     <None Remove="stylecop.json" />
   </ItemGroup>
 
-  <ItemGroup>
+
+ <ItemGroup>
+    <CodeAnalysisDictionary Include="CodeAnalysis.xml" />
     <AdditionalFiles Include="stylecop.json" />
-  </ItemGroup>
+ </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="DotNetAnalyzers.DocumentationAnalyzers" Version="1.0.0-beta.59">
       <PrivateAssets>all</PrivateAssets>
