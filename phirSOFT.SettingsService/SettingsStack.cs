@@ -1,5 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿// <copyright file="SettingsStack.cs" company="phirSOFT">
+// Copyright (c) phirSOFT. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;

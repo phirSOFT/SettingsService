@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="CachedSettingsService.cs" company="phirSOFT">
+// Copyright (c) phirSOFT. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
