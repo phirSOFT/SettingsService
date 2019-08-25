@@ -28,6 +28,11 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
 
+- task: UseDotNet@2
+  inputs:
+    packageType: 'runtime'
+    version: '1.0.16'
+
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
   inputs:
