@@ -75,6 +75,11 @@ namespace phirSOFT.SettingsService
 
             while ((typeChainA.Count > 1) && (typeChainB.Count > 1))
             {
+                if (AreAssignable(typeChainA.Peek(), typeChainB.Peek(), out type))
+                {
+                    return type != typeof(object);
+                }
+
                 if (typeChainA.Count > typeChainB.Count)
                 {
                     typeChainA.Dequeue();
@@ -82,11 +87,6 @@ namespace phirSOFT.SettingsService
                 else
                 {
                     typeChainB.Dequeue();
-                }
-
-                if (AreAssignable(typeChainA.Peek(), typeChainB.Peek(), out type))
-                {
-                    return type != typeof(object);
                 }
             }
 
