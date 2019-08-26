@@ -3,6 +3,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using JetBrains.Annotations;
 using System;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace phirSOFT.SettingsService.Abstractions
     /// <remarks>
     ///     Though it might not required, most implementations will only accept serializable settings type.
     /// </remarks>
+    [PublicAPI]
     public interface ISettingsService : IReadOnlySettingsService
     {
         /// <summary>
@@ -33,7 +35,7 @@ namespace phirSOFT.SettingsService.Abstractions
         /// <param name="initialValue">The initial value of this setting.</param>
         /// <param name="type">The type of the setting.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task RegisterSettingAsync(string key, object defaultValue, object initialValue, Type type);
+        Task RegisterSettingAsync([NotNull] string key, [CanBeNull] object defaultValue, [CanBeNull] object initialValue, [NotNull] Type type);
 
         /// <summary>
         ///     Sets a setting to a new value.
@@ -42,7 +44,7 @@ namespace phirSOFT.SettingsService.Abstractions
         /// <param name="value">he value of the setting.</param>
         /// <param name="type">The type of the setting.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task SetSettingAsync(string key, object value, Type type);
+        Task SetSettingAsync([NotNull] string key, [CanBeNull] object value, [NotNull] Type type);
 
         /// <summary>
         ///     Stores all settings to disc.
@@ -55,6 +57,6 @@ namespace phirSOFT.SettingsService.Abstractions
         /// </summary>
         /// <param name="key">The key of the setting to unregister.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task UnregisterSettingAsync(string key);
+        Task UnregisterSettingAsync([NotNull] string key);
     }
 }
