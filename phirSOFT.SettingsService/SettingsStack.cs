@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -21,19 +20,21 @@ namespace phirSOFT.SettingsService
     public class SettingsStack : ReadOnlySettingsStack, ISettingsService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SettingsStack"/> class with a given set of
+        ///     Initializes a new instance of the <see cref="SettingsStack"/> class with a given set of
         ///     <see cref="IReadOnlySettingsService"/>s.
         /// </summary>
         /// <param name="writableSettingsService">The <see cref="ISettingsService"/>, that changes should be written to.</param>
         /// <param name="settingsServices">The initial set of <see cref="T:phirSOFT.SettingsService.IReadOnlySettingsService"/>s.</param>
-        public SettingsStack([NotNull] ISettingsService writableSettingsService, [NotNull, ItemNotNull]IEnumerable<IReadOnlySettingsService> settingsServices)
+        public SettingsStack(
+            [NotNull] ISettingsService writableSettingsService,
+            [NotNull] [ItemNotNull] IEnumerable<IReadOnlySettingsService> settingsServices)
             : base(settingsServices)
         {
             WritableService = writableSettingsService;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SettingsStack"/> class.
+        ///     Initializes a new instance of the <see cref="SettingsStack"/> class.
         /// </summary>
         /// <param name="writableSettingsService">The <see cref="ISettingsService"/>, that changes should be written to.</param>
         public SettingsStack([NotNull] ISettingsService writableSettingsService)

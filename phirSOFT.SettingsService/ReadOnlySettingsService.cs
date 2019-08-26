@@ -18,7 +18,7 @@ namespace phirSOFT.SettingsService
         private readonly IReadOnlySettingsService _service;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReadOnlySettingsService"/> class.
+        ///     Initializes a new instance of the <see cref="ReadOnlySettingsService"/> class.
         /// </summary>
         /// <param name="service">The service to wrap.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="service"/> is <see langword="null"/>.</exception>

@@ -13,31 +13,28 @@ using phirSOFT.SettingsService.Abstractions;
 namespace phirSOFT.SettingsService
 {
     /// <summary>
-    /// Provides a <see cref="IReadOnlySettingsService"/>, that retrieves it settings from multiple sources. The first <see cref="IReadOnlySettingsService"/>, that contains the setting, will be used.
+    ///     Provides a <see cref="IReadOnlySettingsService"/>, that retrieves it settings from multiple sources. The first
+    ///     <see cref="IReadOnlySettingsService"/>, that contains the setting, will be used.
     /// </summary>
     [PublicAPI]
     public class ReadOnlySettingsStack : Collection<IReadOnlySettingsService>, IReadOnlySettingsService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReadOnlySettingsStack"/> class with a given set of
+        ///     Initializes a new instance of the <see cref="ReadOnlySettingsStack"/> class with a given set of
         ///     <see cref="IReadOnlySettingsService"/>s.
         /// </summary>
         /// <param name="settingsServices">The initial set of <see cref="T:phirSOFT.SettingsService.IReadOnlySettingsService"/>s.</param>
-        public ReadOnlySettingsStack([NotNull, ItemNotNull]IEnumerable<IReadOnlySettingsService> settingsServices)
+        public ReadOnlySettingsStack([NotNull] [ItemNotNull] IEnumerable<IReadOnlySettingsService> settingsServices)
         {
             if (settingsServices == null)
-            {
                 throw new ArgumentNullException(nameof(settingsServices));
-            }
 
             foreach (IReadOnlySettingsService readOnlySettingsService in settingsServices)
-            {
                 Add(readOnlySettingsService);
-            }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReadOnlySettingsStack"/> class.
+        ///     Initializes a new instance of the <see cref="ReadOnlySettingsStack"/> class.
         /// </summary>
         public ReadOnlySettingsStack()
         {
@@ -57,10 +54,14 @@ namespace phirSOFT.SettingsService
         }
 
         /// <summary>
-        /// Tries to find the <see cref="IReadOnlySettingsService"/>, that has a <paramref name="key"/> registered.
+        ///     Tries to find the <see cref="IReadOnlySettingsService"/>, that has a <paramref name="key"/> registered.
         /// </summary>
         /// <param name="key">The key to find a settings service for.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation. The result of the <see cref="Task"/> will be a <see cref="IReadOnlySettingsService"/>, that contains the requested key, or <see langword="null"/>, if not <see cref="IReadOnlySettingsService"/> contained the <paramref name="key"/>.</returns>
+        /// <returns>
+        ///     A <see cref="Task"/> representing the asynchronous operation. The result of the <see cref="Task"/> will be a
+        ///     <see cref="IReadOnlySettingsService"/>, that contains the requested key, or <see langword="null"/>, if not
+        ///     <see cref="IReadOnlySettingsService"/> contained the <paramref name="key"/>.
+        /// </returns>
         [ItemCanBeNull]
         protected async Task<IReadOnlySettingsService> TryGetSettingService(string key)
         {
@@ -69,11 +70,9 @@ namespace phirSOFT.SettingsService
                 do
                 {
                     if (!enumerator.MoveNext())
-                    {
                         return null;
-                    }
                 }
-                while (!(enumerator.Current != null && await enumerator.Current.IsRegisteredAsync(key)));
+                while (!((enumerator.Current != null) && await enumerator.Current.IsRegisteredAsync(key)));
 
                 return enumerator.Current;
             }

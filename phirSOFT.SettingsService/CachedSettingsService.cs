@@ -64,9 +64,7 @@ namespace phirSOFT.SettingsService
         public async Task<bool> IsRegisteredAsync(string key)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
-            {
                 return _valuesCache.ContainsKey(key) || await IsRegisteredInternalAsync(key);
-            }
         }
 
         /// <inheritdoc/>
@@ -106,9 +104,7 @@ namespace phirSOFT.SettingsService
 #pragma warning restore 4014, IDISP013, SA1313
 
                 if (!_insertedKeys.ContainsKey(key))
-                {
                     _changedKeys.Add(key);
-                }
             }
         }
 
@@ -122,21 +118,15 @@ namespace phirSOFT.SettingsService
                 {
                     Task task = UnregisterSettingInternalAsync(deletedKey);
                     if (SupportConcurrentUnregister)
-                    {
                         runnningTasks.Add(task);
-                    }
                     else
-                    {
                         await task.ConfigureAwait(false);
-                    }
                 }
 
                 _deletedKeys.Clear();
 
                 if (SupportConcurrentUnregister)
-                {
                     await Task.WhenAll(runnningTasks).ConfigureAwait(false);
-                }
 
                 runnningTasks.Clear();
 
@@ -150,48 +140,34 @@ namespace phirSOFT.SettingsService
                         key.Value.Item2);
 
                     if (SupportConcurrentRegister)
-                    {
                         runnningTasks.Add(task);
-                    }
                     else
-                    {
                         await task.ConfigureAwait(false);
-                    }
                 }
 
                 _insertedKeys.Clear();
 
                 if (SupportConcurrentRegister)
-                {
                     await Task.WhenAll(runnningTasks).ConfigureAwait(false);
-                }
 
                 runnningTasks.Clear();
 
                 foreach (string key in _changedKeys)
                 {
                     if (!_valuesCache.TryGetValue(key, out CacheEntry setting))
-                    {
                         continue;
-                    }
 
                     (object value, Type type) = await setting.ConfigureAwait(false);
                     Task task = SetSettingInternalAsync(key, value, type);
 
                     if (SupportConcurrentUpdate)
-                    {
                         runnningTasks.Add(task);
-                    }
                     else
-                    {
                         await task.ConfigureAwait(false);
-                    }
                 }
 
                 if (SupportConcurrentUpdate)
-                {
                     await Task.WhenAll(runnningTasks).ConfigureAwait(false);
-                }
 
                 await StoreInternalAsync();
             }
@@ -204,9 +180,7 @@ namespace phirSOFT.SettingsService
             {
                 _deletedKeys.Add(key);
                 if (!_valuesCache.TryRemove(key, out _))
-                {
                     return;
-                }
 
                 _changedKeys.Remove(key);
                 _insertedKeys.TryRemove(key, out _);
@@ -250,7 +224,10 @@ namespace phirSOFT.SettingsService
         /// <param name="value">The new value of the setting.</param>
         /// <param name="type">The type of the setting.</param>
         /// <returns>A task that finished, when the value has been set.</returns>
-        protected abstract Task SetSettingInternalAsync([NotNull] string key, [CanBeNull] object value, [NotNull] Type type);
+        protected abstract Task SetSettingInternalAsync(
+            [NotNull] string key,
+            [CanBeNull] object value,
+            [NotNull] Type type);
 
         /// <summary>
         ///     Performs the actual store operation.

@@ -3,9 +3,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using JetBrains.Annotations;
 using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace phirSOFT.SettingsService.Abstractions
 {
@@ -35,7 +35,11 @@ namespace phirSOFT.SettingsService.Abstractions
         /// <param name="initialValue">The initial value of this setting.</param>
         /// <param name="type">The type of the setting.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task RegisterSettingAsync([NotNull] string key, [CanBeNull] object defaultValue, [CanBeNull] object initialValue, [NotNull] Type type);
+        Task RegisterSettingAsync(
+            [NotNull] string key,
+            [CanBeNull] object defaultValue,
+            [CanBeNull] object initialValue,
+            [NotNull] Type type);
 
         /// <summary>
         ///     Sets a setting to a new value.

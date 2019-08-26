@@ -5,4 +5,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("phirSOFT.SettingsService.Test")]
+[assembly: InternalsVisibleTo("phirSOFT.SettingsService.Test")]
