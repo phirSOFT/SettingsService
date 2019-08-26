@@ -1,4 +1,15 @@
-mode: ContinuousDelivery
-branches: {}
+assembly-versioning-scheme: MajorMinorPatch
+mode: Mainline
+branches:
+  develop:
+    mode: ContinuousDeployment
+  feature:
+    mode: ContinuousDeployment
+  hotfix:
+    mode: ContinuousDelivery
+  release:
+    mode: ContinuousDeployment
+    tag: pre
 ignore:
   sha: []
+merge-message-formats: {}
