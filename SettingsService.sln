@@ -14,6 +14,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ci-Pipeline", "Ci-Pipeline"
 		global.json = global.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Changelog", "Changelog", "{4B680FF6-F8F4-42EB-8724-AA98E094F9EC}"
+	ProjectSection(SolutionItems) = preProject
+		Changelog.txt = Changelog.txt
+		ReleaseNotes.md = ReleaseNotes.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "phirSOFT.SettingsService.Test", "phirSOFT.SettingsService.Test\phirSOFT.SettingsService.Test.csproj", "{57DBF68A-B21F-4015-8EB6-B55FFDD9028F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +36,10 @@ Global
 		{079213BD-0975-4B46-B37B-F18AD640681B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{079213BD-0975-4B46-B37B-F18AD640681B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{079213BD-0975-4B46-B37B-F18AD640681B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57DBF68A-B21F-4015-8EB6-B55FFDD9028F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57DBF68A-B21F-4015-8EB6-B55FFDD9028F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57DBF68A-B21F-4015-8EB6-B55FFDD9028F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57DBF68A-B21F-4015-8EB6-B55FFDD9028F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

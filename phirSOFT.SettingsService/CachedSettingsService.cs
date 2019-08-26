@@ -1,19 +1,26 @@
-﻿using System;
+﻿// <copyright file="CachedSettingsService.cs" company="phirSOFT">
+// Copyright (c) phirSOFT. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Nito.AsyncEx;
 using phirSOFT.SettingsService.Abstractions;
+using CacheEntry = Nito.AsyncEx.AsyncLazy<(object value, System.Type type)>;
 
 namespace phirSOFT.SettingsService
 {
-    using CacheEntry = AsyncLazy<(object value, Type type)>;
-
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <summary>
     ///     Implements a settings service, that will minimize the calls to the
     ///     inheriting settings service. All calls are managed thread safe.
     /// </summary>
+    [PublicAPI]
     public abstract class CachedSettingsService : ISettingsService
     {
         private readonly SortedSet<string> _changedKeys = new SortedSet<string>();
@@ -28,74 +35,53 @@ namespace phirSOFT.SettingsService
             new ConcurrentDictionary<string, CacheEntry>();
 
         /// <summary>
-        ///     Gets wheter two settings can be unregistred at the same time.
+        ///     Gets a value indicating whether settings can be registered at the same time.
+        /// </summary>
+        protected abstract bool SupportConcurrentRegister { get; }
+
+        /// <summary>
+        ///     Gets a value indicating whether two settings can be unregistered at the same time.
         /// </summary>
         protected abstract bool SupportConcurrentUnregister { get; }
 
         /// <summary>
-        ///     Gets wheter two settings can be updateted at the same time.
+        ///     Gets a value indicating whether two settings can be updated at the same time.
         /// </summary>
         protected abstract bool SupportConcurrentUpdate { get; }
 
-        /// <summary>
-        ///     Geths wheter to settings can be registred at the same time.
-        /// </summary>
-        protected abstract bool SupportConcurrentRegister { get; }
-
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public async Task<object> GetSettingAsync(string key, Type type)
         {
-            using (var _ = await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
+            using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
-                var cacheEntry = await _valuesCache.GetOrAdd(key,
+                (object value, Type type) cacheEntry = await _valuesCache.GetOrAdd(
+                    key,
                     internalKey => new CacheEntry(() => ConstructCacheEntry(internalKey, type)));
 
                 return cacheEntry.value;
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public async Task<bool> IsRegisteredAsync(string key)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
+                return _valuesCache.ContainsKey(key) || await IsRegisteredInternalAsync(key);
+        }
+
+        /// <inheritdoc/>
+        public async Task DiscardAsync()
+        {
+            using (await _readerWriterLock.ReaderLockAsync())
             {
-                return _valuesCache.ContainsKey(key) || await IsRegisterdInternalAsync(key);
+                _insertedKeys.Clear();
+                _changedKeys.Clear();
+                _deletedKeys.Clear();
+                _valuesCache.Clear();
             }
         }
 
-        private async Task<(object, Type)> ConstructCacheEntry(string key, Type type)
-        {
-            var value = await GetSettingInternalAsync(key, type).ConfigureAwait(false);
-            return (value, type);
-        }
-
-        /// <summary>
-        ///     Retrives the value of a setting from the actual settings service.
-        /// </summary>
-        /// <param name="key">The key of the setting.</param>
-        /// <param name="type">The type of the setting</param>
-        /// <returns>The setting with the given key.</returns>
-        protected abstract Task<object> GetSettingInternalAsync(string key, Type type);
-
-
-        /// <inheritdoc />
-        public async Task SetSettingAsync(string key, object value, Type type)
-        {
-            using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
-            {
-                var entry = new CacheEntry(() => Task.FromResult((value, type)));
-
-#pragma warning disable 4014
-                // we dont have to await this. The only thing to await is the entry itselves.
-                _valuesCache.AddOrUpdate(key, entry, (__, ___) => entry);
-#pragma warning restore 4014
-
-                if (!_insertedKeys.ContainsKey(key))
-                    _changedKeys.Add(key);
-            }
-        }
-
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public async Task RegisterSettingAsync(string key, object defaultValue, object initialValue, Type type)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
@@ -106,7 +92,62 @@ namespace phirSOFT.SettingsService
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
+        public async Task SetSettingAsync(string key, object value, Type type)
+        {
+            using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
+            {
+                var entry = new CacheEntry(() => Task.FromResult((value, type)));
+
+#pragma warning disable 4014, IDISP013, SA1313
+
+                // we don't have to await this. The only thing to await is the entry itself.
+                _valuesCache.AddOrUpdate(key, entry, (__, ___) => entry);
+#pragma warning restore 4014, IDISP013, SA1313
+
+                if (!_insertedKeys.ContainsKey(key))
+                    _changedKeys.Add(key);
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task StoreAsync()
+        {
+            using (await _readerWriterLock.WriterLockAsync().ConfigureAwait(false))
+            {
+                await PropagateChanges(_deletedKeys, UnregisterSettingInternalAsync, SupportConcurrentUnregister)
+                    .ConfigureAwait(false);
+                await PropagateChanges(
+                        _insertedKeys,
+                        async key =>
+                        {
+                            CacheEntry initialValue = _valuesCache[key.Key];
+                            await RegisterSettingInternalAsync(
+                                    key.Key,
+                                    key.Value.Item1,
+                                    (await initialValue.ConfigureAwait(false)).value,
+                                    key.Value.Item2)
+                                .ConfigureAwait(false);
+                        },
+                        SupportConcurrentRegister)
+                    .ConfigureAwait(false);
+
+                await PropagateChanges(
+                        GetUpdatedEntries(),
+                        async keyedEntry =>
+                        {
+                            (string key, CacheEntry entry) = keyedEntry;
+                            (object value, Type type) = await entry.ConfigureAwait(false);
+                            await SetSettingInternalAsync(key, value, type).ConfigureAwait(false);
+                        },
+                        SupportConcurrentUpdate)
+                    .ConfigureAwait(false);
+
+                await StoreInternalAsync();
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task UnregisterSettingAsync(string key)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
@@ -120,80 +161,47 @@ namespace phirSOFT.SettingsService
             }
         }
 
-        /// <inheritdoc />
-        public async Task StoreAsync()
-        {
-            using (await _readerWriterLock.WriterLockAsync().ConfigureAwait(false))
-            {
-                var runnningTasks = new List<Task>();
-                foreach (var deletedKey in _deletedKeys)
-                {
-                    var task = UnregisterSettingInternalAsync(deletedKey);
-                    if (SupportConcurrentUnregister)
-                        runnningTasks.Add(task);
-                    else
-                        await task.ConfigureAwait(false);
-                }
+        /// <summary>
+        ///     Retrieves the value of a setting from the actual settings service.
+        /// </summary>
+        /// <param name="key">The key of the setting.</param>
+        /// <param name="type">The type of the setting.</param>
+        /// <returns>The setting with the given key.</returns>
+        [ItemCanBeNull]
+        protected abstract Task<object> GetSettingInternalAsync([NotNull] string key, [NotNull] Type type);
 
-                _deletedKeys.Clear();
+        /// <summary>
+        ///     Gets whether a setting with the given key in known to the actual settings service.
+        /// </summary>
+        /// <param name="key">The key of the setting, to determine, whether it is registered.</param>
+        /// <returns>A task containing the query result.</returns>
+        protected abstract Task<bool> IsRegisteredInternalAsync([NotNull] string key);
 
-                if (SupportConcurrentUnregister)
-                    await Task.WhenAll(runnningTasks).ConfigureAwait(false);
+        /// <summary>
+        ///     Performs the actual settings registration.
+        /// </summary>
+        /// <param name="key">The key of the setting.</param>
+        /// <param name="defaultValue">The default value of the key.</param>
+        /// <param name="initialValue">The initial value of the key.</param>
+        /// <param name="type">The type of the property.</param>
+        /// <returns>A task, that finished when the new settings has been registered.</returns>
+        protected abstract Task RegisterSettingInternalAsync(
+            [NotNull] string key,
+            [CanBeNull] object defaultValue,
+            [CanBeNull] object initialValue,
+            [NotNull] Type type);
 
-                runnningTasks.Clear();
-
-                foreach (var key in _insertedKeys)
-                {
-                    var initialValue = _valuesCache[key.Key];
-                    var task = RegisterSettingInternalAsync(key.Key, key.Value.Item1, (await initialValue).value,
-                        key.Value.Item2);
-
-                    if (SupportConcurrentRegister)
-                        runnningTasks.Add(task);
-                    else
-                        await task.ConfigureAwait(false);
-                }
-
-                _insertedKeys.Clear();
-
-                if (SupportConcurrentRegister)
-                    await Task.WhenAll(runnningTasks).ConfigureAwait(false);
-
-                runnningTasks.Clear();
-
-                foreach (var key in _changedKeys)
-                {
-                    if (!_valuesCache.TryGetValue(key, out var setting))
-                        continue;
-
-                    var (value, type) = await setting.ConfigureAwait(false);
-                    var task = SetSettingInternalAsync(key, value, type);
-
-
-                    if (SupportConcurrentUpdate)
-                        runnningTasks.Add(task);
-                    else
-                        await task.ConfigureAwait(false);
-                }
-
-                if (SupportConcurrentUpdate)
-                    await Task.WhenAll(runnningTasks).ConfigureAwait(false);
-
-                await StoreInternalAsync();
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task DiscardAsync()
-        {
-            using (await _readerWriterLock.ReaderLockAsync())
-            {
-                _insertedKeys.Clear();
-                _changedKeys.Clear();
-                _deletedKeys.Clear();
-                _valuesCache.Clear();
-            }
-        }
+        /// <summary>
+        ///     Performs the actual set operation.
+        /// </summary>
+        /// <param name="key">The key of the setting.</param>
+        /// <param name="value">The new value of the setting.</param>
+        /// <param name="type">The type of the setting.</param>
+        /// <returns>A task that finished, when the value has been set.</returns>
+        protected abstract Task SetSettingInternalAsync(
+            [NotNull] string key,
+            [CanBeNull] object value,
+            [NotNull] Type type);
 
         /// <summary>
         ///     Performs the actual store operation.
@@ -202,36 +210,40 @@ namespace phirSOFT.SettingsService
         protected abstract Task StoreInternalAsync();
 
         /// <summary>
-        ///     Performs the actual settings registration.
+        ///     Performs the actual unregister.
         /// </summary>
-        /// <param name="key">The key of the setting.</param>
-        /// <param name="defaultValue">The default value of the key.</param>
-        /// <param name="initialValue">The intial value of the key.</param>
-        /// <param name="type">The type of the property.</param>
-        /// <returns>A task, that finished when the new settings has been registred.</returns>
-        protected abstract Task RegisterSettingInternalAsync(string key,
-            object defaultValue, object initialValue, Type type);
+        /// <param name="key">The key of the property to unregister.</param>
+        /// <returns>A task, that finished when the new settings has been unregistered.</returns>
+        protected abstract Task UnregisterSettingInternalAsync([NotNull] string key);
 
-        /// <summary>
-        ///     Performs the actual unregister
-        /// </summary>
-        /// <param name="key">The key of the property to unregister</param>
-        /// <returns>A task, that finished when the new settings has been unregistred.</returns>
-        protected abstract Task UnregisterSettingInternalAsync(string key);
+        private async Task<(object, Type)> ConstructCacheEntry([NotNull] string key, [NotNull] Type type)
+        {
+            object value = await GetSettingInternalAsync(key, type).ConfigureAwait(false);
+            return (value, type);
+        }
 
-        /// <summary>
-        ///     Gets wheter a setting with the given key in known to the actual settings service.
-        /// </summary>
-        /// <returns>A task containing the query result.</returns>
-        protected abstract Task<bool> IsRegisterdInternalAsync(string key);
+        private IEnumerable<(string Key, CacheEntry Entry)> GetUpdatedEntries()
+        {
+            foreach (string changedKey in _changedKeys)
+            {
+                if (_valuesCache.TryGetValue(changedKey, out CacheEntry updatedEntry))
+                    yield return (changedKey, updatedEntry);
+            }
+        }
 
-        /// <summary>
-        ///     Performs the actual set operation.
-        /// </summary>
-        /// <param name="key">The key of the setting.</param>
-        /// <param name="value">The new value of the setting</param>
-        /// <param name="type">The type of the setting.</param>
-        /// <returns>A task that finished, when the value has been set.</returns>
-        protected abstract Task SetSettingInternalAsync(string key, object value, Type type);
+        private async Task PropagateChanges<T>(
+            IEnumerable<T> source,
+            Func<T, Task> propagateAction,
+            bool supportConcurrentExecution)
+        {
+            if (supportConcurrentExecution)
+                await Task.WhenAll(source.Select(propagateAction)).ConfigureAwait(false);
+            else
+                foreach (Task task in source.Select(propagateAction))
+                    await task.ConfigureAwait(false);
+
+            if (source is ICollection<T> collection)
+                collection.Clear();
+        }
     }
 }
