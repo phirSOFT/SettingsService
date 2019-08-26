@@ -182,9 +182,9 @@ namespace phirSOFT.SettingsService
         /// </summary>
         /// <param name="key">The key of the setting.</param>
         /// <param name="defaultValue">The default value of the key.</param>
-        /// <param name="initialValue">The intial value of the key.</param>
+        /// <param name="initialValue">The initial value of the key.</param>
         /// <param name="type">The type of the property.</param>
-        /// <returns>A task, that finished when the new settings has been registred.</returns>
+        /// <returns>A task, that finished when the new settings has been registered.</returns>
         protected abstract Task RegisterSettingInternalAsync(
             [NotNull] string key,
             [CanBeNull] object defaultValue,
@@ -213,7 +213,7 @@ namespace phirSOFT.SettingsService
         ///     Performs the actual unregister.
         /// </summary>
         /// <param name="key">The key of the property to unregister.</param>
-        /// <returns>A task, that finished when the new settings has been unregistred.</returns>
+        /// <returns>A task, that finished when the new settings has been unregistered.</returns>
         protected abstract Task UnregisterSettingInternalAsync([NotNull] string key);
 
         private async Task<(object, Type)> ConstructCacheEntry([NotNull] string key, [NotNull] Type type)

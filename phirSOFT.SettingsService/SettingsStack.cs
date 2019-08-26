@@ -14,7 +14,7 @@ namespace phirSOFT.SettingsService
 {
     /// <inheritdoc cref="ISettingsService"/>
     /// <summary>
-    ///     Provides a settings service that retrives settings from multiple sources.
+    ///     Provides a settings service that retrieves settings from multiple sources.
     /// </summary>
     [PublicAPI]
     public class SettingsStack : ReadOnlySettingsStack, ISettingsService
