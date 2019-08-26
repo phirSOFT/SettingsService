@@ -6,7 +6,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using phirSOFT.SettingsService.Abstractions;
 
 namespace phirSOFT.SettingsService
@@ -15,68 +17,35 @@ namespace phirSOFT.SettingsService
     /// <summary>
     ///     Provides a settings service that retrives settings from multiple sources.
     /// </summary>
-    public class SettingsStack : Collection<IReadOnlySettingsService>, ISettingsService
+    [PublicAPI]
+    public class SettingsStack : ReadOnlySettingsStack, ISettingsService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsStack"/> class with a given set of
         ///     <see cref="IReadOnlySettingsService"/>s.
         /// </summary>
+        /// <param name="writableSettingsService">The <see cref="ISettingsService"/>, that changes should be written to.</param>
         /// <param name="settingsServices">The initial set of <see cref="T:phirSOFT.SettingsService.IReadOnlySettingsService"/>s.</param>
-        public SettingsStack(IEnumerable<IReadOnlySettingsService> settingsServices)
+        public SettingsStack([NotNull] ISettingsService writableSettingsService, [NotNull, ItemNotNull]IEnumerable<IReadOnlySettingsService> settingsServices)
+            : base(settingsServices)
         {
-            foreach (IReadOnlySettingsService readOnlySettingsService in settingsServices)
-            {
-                Add(readOnlySettingsService);
-            }
+            WritableService = writableSettingsService;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsStack"/> class.
         /// </summary>
-        public SettingsStack()
+        /// <param name="writableSettingsService">The <see cref="ISettingsService"/>, that changes should be written to.</param>
+        public SettingsStack([NotNull] ISettingsService writableSettingsService)
+            : this(writableSettingsService, Enumerable.Empty<IReadOnlySettingsService>())
         {
         }
 
         /// <summary>
         ///     Gets or sets the <see cref="ISettingsService"/>, that is used to write settings.
         /// </summary>
+        [NotNull]
         public ISettingsService WritableService { get; set; }
-
-        /// <inheritdoc/>
-        public async Task<object> GetSettingAsync(string key, Type type)
-        {
-            using (IEnumerator<IReadOnlySettingsService> enumerator = GetEnumerator())
-            {
-                do
-                {
-                    if (!enumerator.MoveNext())
-                    {
-                        throw new KeyNotFoundException();
-                    }
-                }
-                while (!await enumerator.Current.IsRegisteredAsync(key));
-
-                return await enumerator.Current.GetSettingAsync(key, type);
-            }
-        }
-
-        /// <inheritdoc/>
-        public async Task<bool> IsRegisteredAsync(string key)
-        {
-            using (IEnumerator<IReadOnlySettingsService> enumerator = GetEnumerator())
-            {
-                do
-                {
-                    if (!enumerator.MoveNext())
-                    {
-                        return false;
-                    }
-                }
-                while (!await enumerator.Current.IsRegisteredAsync(key));
-
-                return true;
-            }
-        }
 
         /// <inheritdoc/>
         public Task DiscardAsync()
