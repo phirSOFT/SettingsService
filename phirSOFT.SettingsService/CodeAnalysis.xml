@@ -5,5 +5,8 @@
     <Recognized>
       <Word>phirSOFT</Word>
     </Recognized>
+    <Recognized>
+      <Word>unregister</Word>
+    </Recognized>
   </Words>
 </Dictionary>
