@@ -77,3 +77,6 @@ public class MyWebClient
 }
 ```
 Note that this is _not exact_ semantically the same as the example above. In that case the setting is retrieved each time `DoWorkAsync` is invoked, while this example retrives the timeout once and does _not_ update it later on.
+
+## Contributing
+Contributions to this (and the backend implementations) are welcome. See [How to Contribute](contributing.md) for further information.
