@@ -19,6 +19,7 @@ namespace phirSOFT.SettingsService
     ///     Implements a settings service, that will minimize the calls to the
     ///     inheriting settings service. All calls are managed thread safe.
     /// </summary>
+    [PublicAPI]
     public abstract class CachedSettingsService : ISettingsService
     {
         private readonly SortedSet<string> _changedKeys = new SortedSet<string>();
