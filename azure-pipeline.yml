@@ -75,7 +75,13 @@ steps:
   displayName: 'GitHub release (create)'
   condition: and(succeeded(), variables['Release.Publish'])
   inputs:
-    gitHubConnection: phirSOFT.SettingsService
+    gitHubConnection: 'phirSOFT.SettingsService'
+    repositoryName: '$(Build.Repository.Name)'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'manual'
+    tag: '$(GitVersion.FullSemVer)'
     title: '$(GitVersion.FullSemVer)'
-    releaseNotesFile: ReleaseNotes.md
+    releaseNotesFile: 'ReleaseNotes.md'
     isPreRelease: $(Release.IsPrerelease)
+    compareWith: 'lastFullRelease'
