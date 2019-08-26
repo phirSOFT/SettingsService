@@ -2,6 +2,9 @@
 
 The version 0.2.0 has some breaking changes compared to 0.1.x versions.
 
+## Modified types
+  * There is now a `ReadOnlySettingsStack`, that provides a settings stack with not writing support. `SettingsStack` inherits now from `ReadOnlySettingsStack`
+
 ## Moved Types
 The following types where moved to a different namespace (and/or) nuget package.
 
