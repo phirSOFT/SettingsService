@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Nito.AsyncEx;
@@ -114,61 +115,33 @@ namespace phirSOFT.SettingsService
         {
             using (await _readerWriterLock.WriterLockAsync().ConfigureAwait(false))
             {
-                var runnningTasks = new List<Task>();
-                foreach (string deletedKey in _deletedKeys)
-                {
-                    Task task = UnregisterSettingInternalAsync(deletedKey);
-                    if (SupportConcurrentUnregister)
-                        runnningTasks.Add(task);
-                    else
-                        await task.ConfigureAwait(false);
-                }
+                await PropagateChanges(_deletedKeys, UnregisterSettingInternalAsync, SupportConcurrentUnregister)
+                    .ConfigureAwait(false);
+                await PropagateChanges(
+                        _insertedKeys,
+                        async key =>
+                        {
+                            CacheEntry initialValue = _valuesCache[key.Key];
+                            await RegisterSettingInternalAsync(
+                                    key.Key,
+                                    key.Value.Item1,
+                                    (await initialValue.ConfigureAwait(false)).value,
+                                    key.Value.Item2)
+                                .ConfigureAwait(false);
+                        },
+                        SupportConcurrentRegister)
+                    .ConfigureAwait(false);
 
-                _deletedKeys.Clear();
-
-                if (SupportConcurrentUnregister)
-                    await Task.WhenAll(runnningTasks).ConfigureAwait(false);
-
-                runnningTasks.Clear();
-
-                foreach (KeyValuePair<string, (object, Type)> key in _insertedKeys)
-                {
-                    CacheEntry initialValue = _valuesCache[key.Key];
-                    Task task = RegisterSettingInternalAsync(
-                        key.Key,
-                        key.Value.Item1,
-                        (await initialValue).value,
-                        key.Value.Item2);
-
-                    if (SupportConcurrentRegister)
-                        runnningTasks.Add(task);
-                    else
-                        await task.ConfigureAwait(false);
-                }
-
-                _insertedKeys.Clear();
-
-                if (SupportConcurrentRegister)
-                    await Task.WhenAll(runnningTasks).ConfigureAwait(false);
-
-                runnningTasks.Clear();
-
-                foreach (string key in _changedKeys)
-                {
-                    if (!_valuesCache.TryGetValue(key, out CacheEntry setting))
-                        continue;
-
-                    (object value, Type type) = await setting.ConfigureAwait(false);
-                    Task task = SetSettingInternalAsync(key, value, type);
-
-                    if (SupportConcurrentUpdate)
-                        runnningTasks.Add(task);
-                    else
-                        await task.ConfigureAwait(false);
-                }
-
-                if (SupportConcurrentUpdate)
-                    await Task.WhenAll(runnningTasks).ConfigureAwait(false);
+                await PropagateChanges(
+                        GetUpdatedEntries(),
+                        async keyedEntry =>
+                        {
+                            (string key, CacheEntry entry) = keyedEntry;
+                            (object value, Type type) = await entry.ConfigureAwait(false);
+                            await SetSettingInternalAsync(key, value, type).ConfigureAwait(false);
+                        },
+                        SupportConcurrentUpdate)
+                    .ConfigureAwait(false);
 
                 await StoreInternalAsync();
             }
@@ -247,6 +220,30 @@ namespace phirSOFT.SettingsService
         {
             object value = await GetSettingInternalAsync(key, type).ConfigureAwait(false);
             return (value, type);
+        }
+
+        private IEnumerable<(string Key, CacheEntry Entry)> GetUpdatedEntries()
+        {
+            foreach (string changedKey in _changedKeys)
+            {
+                if (_valuesCache.TryGetValue(changedKey, out CacheEntry updatedEntry))
+                    yield return (changedKey, updatedEntry);
+            }
+        }
+
+        private async Task PropagateChanges<T>(
+            IEnumerable<T> source,
+            Func<T, Task> propagateAction,
+            bool supportConcurrentExecution)
+        {
+            if (supportConcurrentExecution)
+                await Task.WhenAll(source.Select(propagateAction)).ConfigureAwait(false);
+            else
+                foreach (Task task in source.Select(propagateAction))
+                    await task.ConfigureAwait(false);
+
+            if (source is ICollection<T> collection)
+                collection.Clear();
         }
     }
 }
