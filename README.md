@@ -19,9 +19,6 @@ To retrieve development versions please add the development feed at https://phir
 
 > PM> Install-Package phirSOFT.SettingsService -Source https://phirsoft.pkgs.visualstudio.com/phirSOFT.SettingsService/_packaging/phirSOFT.SettingsServer/nuget/v3/index.json
 
-## BuildStatus
-
-
 ## Providers
 There a some setting service implementations already, that partially allow integration in existing systems.
 
