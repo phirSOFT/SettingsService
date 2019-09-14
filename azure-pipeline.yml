@@ -1,87 +1,86 @@
 pool:
-  vmImage: 'windows-2019'
+  vmImage: "windows-2019"
 
 trigger:
-- master
-- release/*
-- hotfix/*
-- feature
+  - master
+  - release/*
+  - hotfix/*
+  - feature
 
 pr:
-- master
-- release/*
-- hotfix/*
-- feature
+  - master
+  - release/*
+  - hotfix/*
+  - feature
 
 variables:
   Release.IsPrerelease: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/')))]
   Release.Publish: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))]
 
 steps:
-- task: gittools.gitversion.gitversion-task.GitVersion@5
-  displayName: GitVersion'
-- task: UseDotNet@2
-  displayName: 'Use .Net Core sdk '
-  inputs:
-    useGlobalJson: true
+  - task: gittools.gitversion.gitversion-task.GitVersion@5
+    displayName: GitVersion'
+  - task: UseDotNet@2
+    displayName: "Use .Net Core sdk "
+    inputs:
+      useGlobalJson: true
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet build'
+  - task: DotNetCoreCLI@2
+    displayName: "dotnet build"
 
-- task: UseDotNet@2
-  inputs:
-    packageType: 'runtime'
-    version: '1.0.16'
+  - task: UseDotNet@2
+    inputs:
+      packageType: "runtime"
+      version: "1.0.16"
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet test'
-  inputs:
-    command: test
+  - task: DotNetCoreCLI@2
+    displayName: "dotnet test"
+    inputs:
+      command: test
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: |
-     **\*.nupkg
-     **\*.snupkg
-    TargetFolder: '$(build.artifactstagingdirectory)'
-    flattenFolders: true
-  condition: succeededOrFailed()
+  - task: CopyFiles@2
+    displayName: "Copy Files to: $(build.artifactstagingdirectory)"
+    inputs:
+      SourceFolder: "$(system.defaultworkingdirectory)"
+      Contents: |
+        **\*.nupkg
+        **\*.snupkg
+      TargetFolder: "$(build.artifactstagingdirectory)"
+      flattenFolders: true
+    condition: succeededOrFailed()
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet push'
-  inputs:
-    command: push
-    publishVstsFeed: '0a220c4b-5ab8-47bf-baf0-fdfb139b70c4/faf9ee1b-b648-43cb-9a50-c60ae34d9adf'
-    includesymbols: true
+  - task: DotNetCoreCLI@2
+    displayName: "dotnet push"
+    inputs:
+      command: push
+      publishVstsFeed: "0a220c4b-5ab8-47bf-baf0-fdfb139b70c4/faf9ee1b-b648-43cb-9a50-c60ae34d9adf"
+      includesymbols: true
 
+  - task: NuGetToolInstaller@1
+    condition: and(succeeded(), eq(variables['Release.Publish'], 'True'))
+    inputs:
+      versionSpec: ">4.9.0"
 
-- task: NuGetToolInstaller@1
-  condition: and(succeeded(), eq(variables['Release.Publish'], 'True'))
-  inputs:
-    versionSpec: '>4.9.0'
+  - task: NuGetCommand@2
+    displayName: "Publish to NuGet.org"
+    condition: and(succeeded(), eq(variables['Release.Publish'], 'True'))
+    inputs:
+      command: "push"
+      packagesToPush: "$(Build.ArtifactStagingDirectory)/**/*.nupkg;"
+      nuGetFeedType: "external"
+      publishFeedCredentials: "Nuget (SettingService)"
 
-- task: NuGetCommand@2
-  displayName: 'Publish to NuGet.org'
-  condition: and(succeeded(), eq(variables['Release.Publish'], 'True'))
-  inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'Nuget (SettingService)'
-
-- task: GitHubRelease@0
-  displayName: 'GitHub release (create)'
-  condition: and(succeeded(), eq(variables['Release.Publish'], 'True'))
-  inputs:
-    gitHubConnection: 'phirSOFT.SettingsService'
-    repositoryName: '$(Build.Repository.Name)'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'manual'
-    tag: '$(GitVersion.FullSemVer)'
-    title: '$(GitVersion.FullSemVer)'
-    releaseNotesFile: 'ReleaseNotes.md'
-    isPreRelease: $(Release.IsPrerelease)
-    compareWith: 'lastFullRelease'
+  - task: GitHubRelease@0
+    displayName: "GitHub release (create)"
+    condition: and(succeeded(), eq(variables['Release.Publish'], 'True'))
+    inputs:
+      gitHubConnection: "phirSOFT.SettingsService"
+      repositoryName: "$(Build.Repository.Name)"
+      action: "create"
+      target: "$(Build.SourceVersion)"
+      tagSource: "manual"
+      tag: "$(GitVersion.FullSemVer)"
+      title: "$(GitVersion.FullSemVer)"
+      releaseNotesFile: "ReleaseNotes.md"
+      isPreRelease: $(Release.IsPrerelease)
+      compareWith: "lastFullRelease"
