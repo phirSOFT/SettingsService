@@ -1,6 +1,0 @@
-Changelog
-
-v0.2.0 - Not Released yet
-    - Refactor: Split `SettingsStack` into `ReadOnlySettingStack` and `SettingsStack`
-	- Refactor: Split interfaces into `phirSOFT.SettingService.Abstractions`
-	- Start changelog
