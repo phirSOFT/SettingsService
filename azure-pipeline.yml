@@ -58,13 +58,13 @@ steps:
 
 
 - task: NuGetToolInstaller@1
-  condition: and(succeeded(), variables['Release.Publish'])
+  condition: and(succeeded(), eq(variables['Release.Publish'], 'True'))
   inputs:
     versionSpec: '>4.9.0'
 
 - task: NuGetCommand@2
   displayName: 'Publish to NuGet.org'
-  condition: and(succeeded(), variables['Release.Publish'])
+  condition: and(succeeded(), eq(variables['Release.Publish'], 'True'))
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;'
@@ -73,7 +73,7 @@ steps:
 
 - task: GitHubRelease@0
   displayName: 'GitHub release (create)'
-  condition: and(succeeded(), variables['Release.Publish'])
+  condition: and(succeeded(), eq(variables['Release.Publish'], 'True'))
   inputs:
     gitHubConnection: 'phirSOFT.SettingsService'
     repositoryName: '$(Build.Repository.Name)'
