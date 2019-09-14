@@ -2,16 +2,24 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and ad
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.2.3] - 2019-09-14
+### Added
+- Add Icon to `phirSOFT.SettingsService` nuget package.
 
-If possible we are following the rules of [Semantic Versioning](https://semver.org/spec/v2.0.0.html),
-but we try to keep the major version in sync with [phirSOFT/SettingsService](https://github.com/phirSOFT/SettingsService)
-to avoid confusion.
+### Fixed
+- Fixed the Pipeline, so it does not publish build results of pull requests.
 
-## [0.2.0] - 2019-08-2
-### Refactorings
+
+## [0.2.0] - 2019-08-26
+## Added
+- There is now a `ReadOnlySettingsStack`, that provides a settings stack with not writing support. `SettingsStack` inherits now from `ReadOnlySettingsStack`
+
+### Changed
 - Split `SettingsStack` into `ReadOnlySettingStack` and `SettingsStack`
-- Split interfaces into `phirSOFT.SettingService.Abstractions`
+- `phirSOFT.SettingsService.ISettingsService` was moved to `phirSOFT.SettingsService.Abstractions.ISettingsService` and is now shipped in the `phirSOFT.SettingsService.Abstractions` nuget package.
+- `phirSOFT.SettingsService.IReadOnlySettingsService` was moved to `phirSOFT.SettingsService.Abstractions.IReadOnlySettingsService` and is now shipped in the `phirSOFT.SettingsService.Abstractions` nuget package.
+- Rename `IReadOnlySettingsService.IsRegisterdAsync` to `IReadOnlySettingsService.IsRegisteredAsync`
 
 ### Other
 - Start changelog
