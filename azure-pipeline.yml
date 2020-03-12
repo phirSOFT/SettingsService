@@ -20,7 +20,7 @@ variables:
 steps:
   - task: GitVersion@5
     inputs:
-      runtime: 'core'
+      runtime: "core"
   - task: UseDotNet@2
     displayName: "Use .Net Core sdk "
     inputs:
@@ -53,10 +53,10 @@ steps:
   - task: DotNetCoreCLI@2
     displayName: "dotnet push"
     inputs:
-      command: 'push'
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-      nuGetFeedType: 'internal'
-      publishVstsFeed: '388aae20-7808-45ea-998a-2f8a20859841/a32b6034-468f-431e-84b4-5b66854b4bf0'
+      command: "push"
+      packagesToPush: "$(Build.ArtifactStagingDirectory)/*.nupkg"
+      nuGetFeedType: "internal"
+      publishVstsFeed: "388aae20-7808-45ea-998a-2f8a20859841/a32b6034-468f-431e-84b4-5b66854b4bf0"
 
   - task: NuGetToolInstaller@1
     condition: and(succeeded(), eq(variables['Release.Publish'], 'True'))
