@@ -15,7 +15,7 @@ namespace phirSOFT.SettingsService.Test
         public async Task GetSettingAsync_ReturnsValue()
         {
             // Arrange
-            var readOnlySettingsStack = new ReadOnlySettingsStack {CreateReadOnlySettingsService()};
+            var readOnlySettingsStack = new ReadOnlySettingsStack { CreateReadOnlySettingsService() };
             Type type = typeof(string);
 
             // Act

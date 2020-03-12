@@ -51,7 +51,6 @@ namespace phirSOFT.SettingsService
             }
 
             return await settingsService.GetSettingAsync(key, type).ConfigureAwait(false);
-
         }
 
         /// <inheritdoc/>
