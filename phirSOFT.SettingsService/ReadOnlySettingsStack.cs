@@ -43,8 +43,14 @@ namespace phirSOFT.SettingsService
         /// <inheritdoc/>
         public async Task<object> GetSettingAsync(string key, Type type)
         {
-            return (await TryGetSettingService(key).ConfigureAwait(false))?.GetSettingAsync(key, type) ??
-                   throw new KeyNotFoundException();
+            IReadOnlySettingsService settingsService = await TryGetSettingService(key).ConfigureAwait(false);
+
+            if (settingsService == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            return await settingsService.GetSettingAsync(key, type).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

@@ -18,8 +18,9 @@ variables:
   Release.Publish: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))]
 
 steps:
-  - task: gittools.gitversion.gitversion-task.GitVersion@5
-    displayName: GitVersion'
+  - task: GitVersion@5
+    inputs:
+      runtime: "core"
   - task: UseDotNet@2
     displayName: "Use .Net Core sdk "
     inputs:
@@ -52,9 +53,10 @@ steps:
   - task: DotNetCoreCLI@2
     displayName: "dotnet push"
     inputs:
-      command: push
-      publishVstsFeed: "0a220c4b-5ab8-47bf-baf0-fdfb139b70c4/faf9ee1b-b648-43cb-9a50-c60ae34d9adf"
-      includesymbols: true
+      command: "push"
+      packagesToPush: "$(Build.ArtifactStagingDirectory)/*.nupkg"
+      nuGetFeedType: "internal"
+      publishVstsFeed: "388aae20-7808-45ea-998a-2f8a20859841/a32b6034-468f-431e-84b4-5b66854b4bf0"
 
   - task: NuGetToolInstaller@1
     condition: and(succeeded(), eq(variables['Release.Publish'], 'True'))
@@ -82,5 +84,5 @@ steps:
       tag: "$(GitVersion.FullSemVer)"
       title: "$(GitVersion.FullSemVer)"
       releaseNotesFile: "ReleaseNotes.md"
-      isPreRelease: $(Release.IsPrerelease)
+      isPreRelease: eq(variables['Release.IsPrerelease'], 'True')
       compareWith: "lastFullRelease"
