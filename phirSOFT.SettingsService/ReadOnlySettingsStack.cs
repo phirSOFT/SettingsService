@@ -25,10 +25,14 @@ namespace phirSOFT.SettingsService
         public ReadOnlySettingsStack(IEnumerable<IReadOnlySettingsService> settingsServices)
         {
             if (settingsServices == null)
+            {
                 throw new ArgumentNullException(nameof(settingsServices));
+            }
 
             foreach (IReadOnlySettingsService readOnlySettingsService in settingsServices)
+            {
                 Add(readOnlySettingsService);
+            }
         }
 
         /// <summary>
@@ -41,7 +45,7 @@ namespace phirSOFT.SettingsService
         /// <inheritdoc/>
         public async Task<object?> GetSettingAsync(string key, Type type)
         {
-            IReadOnlySettingsService settingsService = await TryGetSettingService(key).ConfigureAwait(false);
+            IReadOnlySettingsService? settingsService = await TryGetSettingService(key).ConfigureAwait(false);
 
             if (settingsService == null)
             {
@@ -68,17 +72,17 @@ namespace phirSOFT.SettingsService
         /// </returns>
         protected async Task<IReadOnlySettingsService?> TryGetSettingService(string key)
         {
-            using (IEnumerator<IReadOnlySettingsService> enumerator = GetEnumerator())
+            using IEnumerator<IReadOnlySettingsService> enumerator = GetEnumerator();
+            do
             {
-                do
+                if (!enumerator.MoveNext())
                 {
-                    if (!enumerator.MoveNext())
-                        return null;
+                    return null;
                 }
-                while (!((enumerator.Current != null) && await enumerator.Current.IsRegisteredAsync(key)));
-
-                return enumerator.Current;
             }
+            while (!((enumerator.Current != null) && await enumerator.Current.IsRegisteredAsync(key)));
+
+            return enumerator.Current;
         }
     }
 }
