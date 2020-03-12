@@ -52,13 +52,13 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc/>
-        public Task RegisterSettingAsync(string key, object defaultValue, object initialValue, Type type)
+        public Task RegisterSettingAsync(string key, object? defaultValue, object? initialValue, Type type)
         {
             return WritableService.RegisterSettingAsync(key, defaultValue, initialValue, type);
         }
 
         /// <inheritdoc/>
-        public Task SetSettingAsync(string key, object value, Type type)
+        public Task SetSettingAsync(string key, object? value, Type type)
         {
             return WritableService.SetSettingAsync(key, value, type);
         }

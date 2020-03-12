@@ -25,7 +25,9 @@ namespace phirSOFT.SettingsService
         public static IReadOnlySettingsService AsReadOnly(this IReadOnlySettingsService service)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
             return !(service is ISettingsService) ? service : new ReadOnlySettingsService(service);
         }
@@ -46,12 +48,16 @@ namespace phirSOFT.SettingsService
             string key)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
             if (key == null)
+            {
                 throw new ArgumentNullException(nameof(key));
+            }
 
-            return (T) await service.GetSettingAsync(key, typeof(T));
+            return (T)(await service.GetSettingAsync(key, typeof(T)))!;
         }
 
         /// <summary>
@@ -68,13 +74,17 @@ namespace phirSOFT.SettingsService
         public static Task RegisterSettingAsync<T>(this ISettingsService service, string key)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
             if (key == null)
+            {
                 throw new ArgumentNullException(nameof(key));
+            }
 
             Type type = typeof(T);
-            object defaultValue = GetDefaultValue(type);
+            object? defaultValue = GetDefaultValue(type);
 
             return service.RegisterSettingAsync(key, defaultValue, defaultValue, type);
         }
@@ -96,15 +106,21 @@ namespace phirSOFT.SettingsService
             Type type)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
             if (key == null)
+            {
                 throw new ArgumentNullException(nameof(key));
+            }
 
             if (type == null)
+            {
                 throw new ArgumentNullException(nameof(type));
+            }
 
-            object defaultValue = GetDefaultValue(type);
+            object? defaultValue = GetDefaultValue(type);
 
             return service.RegisterSettingAsync(key, defaultValue, defaultValue, type);
         }
@@ -127,10 +143,14 @@ namespace phirSOFT.SettingsService
             T defaultValue)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
             if (key == null)
+            {
                 throw new ArgumentNullException(nameof(key));
+            }
 
             return service.RegisterSettingAsync(key, defaultValue, defaultValue, typeof(T));
         }
@@ -155,10 +175,14 @@ namespace phirSOFT.SettingsService
             object? defaultValue)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
             if (key == null)
+            {
                 throw new ArgumentNullException(nameof(key));
+            }
 
             return service.RegisterSettingAsync(
                 key,
@@ -186,13 +210,19 @@ namespace phirSOFT.SettingsService
             Type type)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
             if (key == null)
+            {
                 throw new ArgumentNullException(nameof(key));
+            }
 
             if (type == null)
+            {
                 throw new ArgumentNullException(nameof(type));
+            }
 
             return service.RegisterSettingAsync(key, defaultValue, defaultValue, type);
         }
@@ -217,10 +247,14 @@ namespace phirSOFT.SettingsService
             T initialValue)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
             if (key == null)
+            {
                 throw new ArgumentNullException(nameof(key));
+            }
 
             return service.RegisterSettingAsync(key, defaultValue, initialValue, typeof(T));
         }
@@ -247,22 +281,46 @@ namespace phirSOFT.SettingsService
             object? initialValue)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
             if (key == null)
+            {
                 throw new ArgumentNullException(nameof(key));
+            }
 
-            TypeInfo defaultType = defaultValue.GetType().GetTypeInfo();
-            TypeInfo initialType = initialValue.GetType().GetTypeInfo();
+            if (defaultValue == null)
+            {
+                return service.RegisterSettingAsync(
+                    key,
+                    null,
+                    initialValue,
+                    initialValue?.GetType() ?? typeof(object));
+            }
 
-            if (!AreAssignable(defaultType, initialType, out Type type) &&
+            if (initialValue == null)
+            {
+                return service.RegisterSettingAsync(
+                    key,
+                    defaultValue,
+                    null,
+                    defaultValue.GetType());
+            }
+
+            TypeInfo? defaultType = defaultValue.GetType().GetTypeInfo();
+            TypeInfo? initialType = initialValue.GetType().GetTypeInfo();
+
+            if (!AreAssignable(defaultType, initialType, out Type? type) &&
 
                 // The types are not derived from each other, so we have to find a common base type
                 // We don't have to check for a common interface, because we can't deserialize an interface.
                 // Maybe we can allow this for collection like interfaces, but that is a topic to cover later.
                 !HaveCommonBaseType(initialType, defaultType, out type))
+            {
                 throw new ArgumentException(
                     $"`{nameof(defaultValue)}` ({defaultType}) and `{nameof(initialValue)}` ({initialType}) do not share a common base type");
+            }
 
             return service.RegisterSettingAsync(key, defaultValue, initialValue, type);
         }
@@ -285,10 +343,14 @@ namespace phirSOFT.SettingsService
             T value)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
             if (key == null)
+            {
                 throw new ArgumentNullException(nameof(key));
+            }
 
             return service.SetSettingAsync(key, value, typeof(T));
         }
@@ -313,10 +375,14 @@ namespace phirSOFT.SettingsService
             object? value)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
             if (key == null)
+            {
                 throw new ArgumentNullException(nameof(key));
+            }
 
             return service.SetSettingAsync(key, value, value?.GetType() ?? typeof(object));
         }

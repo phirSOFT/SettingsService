@@ -38,15 +38,19 @@ namespace phirSOFT.SettingsService
         /// </returns>
         internal static bool AreAssignable(TypeInfo typeA, TypeInfo typeB, [MaybeNullWhen(false)] out Type type)
         {
-            type = null;
+            type = null!;
 
             // initialType : default Type
             if (typeA.IsAssignableFrom(typeB))
+            {
                 type = typeA.AsType();
+            }
 
             // defaultType : initialType
             else if (typeB.IsAssignableFrom(typeA))
+            {
                 type = typeB.AsType();
+            }
 
             return type != null;
         }
@@ -80,17 +84,23 @@ namespace phirSOFT.SettingsService
         {
             Queue<TypeInfo> typeChainA = GetTypeChain(typeA);
             Queue<TypeInfo> typeChainB = GetTypeChain(typeB);
-            type = null;
+            type = null!;
 
             while ((typeChainA.Count > 1) && (typeChainB.Count > 1))
             {
-                if (AreAssignable(typeChainA.Peek(), typeChainB.Peek(), out type))
+                if (AreAssignable(typeChainA.Peek(), typeChainB.Peek(), out type!))
+                {
                     return type != typeof(object);
+                }
 
                 if (typeChainA.Count > typeChainB.Count)
+                {
                     typeChainA.Dequeue();
+                }
                 else
+                {
                     typeChainB.Dequeue();
+                }
             }
 
             // This line will never be executed but static code analysis cannot infer that
@@ -101,12 +111,13 @@ namespace phirSOFT.SettingsService
         {
             var chain = new Queue<TypeInfo>();
 
+            TypeInfo? currentType = type;
             do
             {
                 chain.Enqueue(type);
-                type = type.BaseType?.GetTypeInfo();
+                currentType = currentType.BaseType?.GetTypeInfo();
             }
-            while (type != null);
+            while (currentType != null);
 
             return chain;
         }

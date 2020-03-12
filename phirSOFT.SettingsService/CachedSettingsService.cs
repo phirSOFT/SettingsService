@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Nito.AsyncEx;
 using phirSOFT.SettingsService.Abstractions;
-using CacheEntry = Nito.AsyncEx.AsyncLazy<(object value, System.Type type)>;
+using CacheEntry = Nito.AsyncEx.AsyncLazy<(object? value, System.Type type)>;
 
 namespace phirSOFT.SettingsService
 {
@@ -24,8 +24,8 @@ namespace phirSOFT.SettingsService
         private readonly SortedSet<string> _changedKeys = new SortedSet<string>();
         private readonly SortedSet<string> _deletedKeys = new SortedSet<string>();
 
-        private readonly ConcurrentDictionary<string, (object, Type)> _insertedKeys =
-            new ConcurrentDictionary<string, (object, Type)>();
+        private readonly ConcurrentDictionary<string, (object?, Type)> _insertedKeys =
+            new ConcurrentDictionary<string, (object?, Type)>();
 
         private readonly AsyncReaderWriterLock _readerWriterLock = new AsyncReaderWriterLock();
 
@@ -52,11 +52,11 @@ namespace phirSOFT.SettingsService
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
-                (object value, Type type) cacheEntry = await _valuesCache.GetOrAdd(
+                (object? value, _) = await _valuesCache.GetOrAdd(
                     key,
                     internalKey => new CacheEntry(() => ConstructCacheEntry(internalKey, type)));
 
-                return cacheEntry.value;
+                return value;
             }
         }
 
@@ -64,7 +64,9 @@ namespace phirSOFT.SettingsService
         public async Task<bool> IsRegisteredAsync(string key)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
+            {
                 return _valuesCache.ContainsKey(key) || await IsRegisteredInternalAsync(key);
+            }
         }
 
         /// <inheritdoc/>
@@ -80,7 +82,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc/>
-        public async Task RegisterSettingAsync(string key, object defaultValue, object initialValue, Type type)
+        public async Task RegisterSettingAsync(string key, object? defaultValue, object? initialValue, Type type)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -91,11 +93,11 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc/>
-        public async Task SetSettingAsync(string key, object value, Type type)
+        public async Task SetSettingAsync(string key, object? value, Type type)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
-                var entry = new CacheEntry(() => Task.FromResult((value, type)));
+                var entry = new CacheEntry(() => Task.FromResult<(object?, Type)>((value, type)));
 
 #pragma warning disable 4014, IDISP013, SA1313
 
@@ -104,7 +106,9 @@ namespace phirSOFT.SettingsService
 #pragma warning restore 4014, IDISP013, SA1313
 
                 if (!_insertedKeys.ContainsKey(key))
+                {
                     _changedKeys.Add(key);
+                }
             }
         }
 
@@ -135,7 +139,7 @@ namespace phirSOFT.SettingsService
                         async keyedEntry =>
                         {
                             (string key, CacheEntry entry) = keyedEntry;
-                            (object value, Type type) = await entry.ConfigureAwait(false);
+                            (object? value, Type type) = await entry.ConfigureAwait(false);
                             await SetSettingInternalAsync(key, value, type).ConfigureAwait(false);
                         },
                         SupportConcurrentUpdate)
@@ -152,7 +156,9 @@ namespace phirSOFT.SettingsService
             {
                 _deletedKeys.Add(key);
                 if (!_valuesCache.TryRemove(key, out _))
+                {
                     return;
+                }
 
                 _changedKeys.Remove(key);
                 _insertedKeys.TryRemove(key, out _);
@@ -215,7 +221,7 @@ namespace phirSOFT.SettingsService
 
         private async Task<(object?, Type)> ConstructCacheEntry(string key, Type type)
         {
-            object value = await GetSettingInternalAsync(key, type).ConfigureAwait(false);
+            object? value = await GetSettingInternalAsync(key, type).ConfigureAwait(false);
             return (value, type);
         }
 
@@ -224,7 +230,9 @@ namespace phirSOFT.SettingsService
             foreach (string changedKey in _changedKeys)
             {
                 if (_valuesCache.TryGetValue(changedKey, out CacheEntry updatedEntry))
+                {
                     yield return (changedKey, updatedEntry);
+                }
             }
         }
 
@@ -234,13 +242,21 @@ namespace phirSOFT.SettingsService
             bool supportConcurrentExecution)
         {
             if (supportConcurrentExecution)
+            {
                 await Task.WhenAll(source.Select(propagateAction)).ConfigureAwait(false);
+            }
             else
+            {
                 foreach (Task task in source.Select(propagateAction))
+                {
                     await task.ConfigureAwait(false);
+                }
+            }
 
             if (source is ICollection<T> collection)
+            {
                 collection.Clear();
+            }
         }
     }
 }
