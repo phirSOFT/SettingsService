@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using phirSOFT.SettingsService.Abstractions;
 
 namespace phirSOFT.SettingsService
@@ -16,7 +15,6 @@ namespace phirSOFT.SettingsService
     ///     Provides a <see cref="IReadOnlySettingsService"/>, that retrieves it settings from multiple sources. The first
     ///     <see cref="IReadOnlySettingsService"/>, that contains the setting, will be used.
     /// </summary>
-    [PublicAPI]
     public class ReadOnlySettingsStack : Collection<IReadOnlySettingsService>, IReadOnlySettingsService
     {
         /// <summary>
@@ -24,7 +22,7 @@ namespace phirSOFT.SettingsService
         ///     <see cref="IReadOnlySettingsService"/>s.
         /// </summary>
         /// <param name="settingsServices">The initial set of <see cref="T:phirSOFT.SettingsService.IReadOnlySettingsService"/>s.</param>
-        public ReadOnlySettingsStack([NotNull] [ItemNotNull] IEnumerable<IReadOnlySettingsService> settingsServices)
+        public ReadOnlySettingsStack(IEnumerable<IReadOnlySettingsService> settingsServices)
         {
             if (settingsServices == null)
                 throw new ArgumentNullException(nameof(settingsServices));
@@ -41,7 +39,7 @@ namespace phirSOFT.SettingsService
         }
 
         /// <inheritdoc/>
-        public async Task<object> GetSettingAsync(string key, Type type)
+        public async Task<object?> GetSettingAsync(string key, Type type)
         {
             IReadOnlySettingsService settingsService = await TryGetSettingService(key).ConfigureAwait(false);
 
@@ -68,8 +66,7 @@ namespace phirSOFT.SettingsService
         ///     <see cref="IReadOnlySettingsService"/>, that contains the requested key, or <see langword="null"/>, if not
         ///     <see cref="IReadOnlySettingsService"/> contained the <paramref name="key"/>.
         /// </returns>
-        [ItemCanBeNull]
-        protected async Task<IReadOnlySettingsService> TryGetSettingService(string key)
+        protected async Task<IReadOnlySettingsService?> TryGetSettingService(string key)
         {
             using (IEnumerator<IReadOnlySettingsService> enumerator = GetEnumerator())
             {

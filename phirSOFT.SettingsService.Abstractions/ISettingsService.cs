@@ -5,7 +5,6 @@
 
 using System;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 
 namespace phirSOFT.SettingsService.Abstractions
 {
@@ -18,7 +17,6 @@ namespace phirSOFT.SettingsService.Abstractions
     /// <remarks>
     ///     Though it might not required, most implementations will only accept serializable settings type.
     /// </remarks>
-    [PublicAPI]
     public interface ISettingsService : IReadOnlySettingsService
     {
         /// <summary>
@@ -36,10 +34,10 @@ namespace phirSOFT.SettingsService.Abstractions
         /// <param name="type">The type of the setting.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task RegisterSettingAsync(
-            [NotNull] string key,
-            [CanBeNull] object defaultValue,
-            [CanBeNull] object initialValue,
-            [NotNull] Type type);
+            string key,
+            object? defaultValue,
+            object? initialValue,
+            Type type);
 
         /// <summary>
         ///     Sets a setting to a new value.
@@ -48,7 +46,7 @@ namespace phirSOFT.SettingsService.Abstractions
         /// <param name="value">he value of the setting.</param>
         /// <param name="type">The type of the setting.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task SetSettingAsync([NotNull] string key, [CanBeNull] object value, [NotNull] Type type);
+        Task SetSettingAsync(string key, object? value, Type type);
 
         /// <summary>
         ///     Stores all settings to disc.
@@ -61,6 +59,6 @@ namespace phirSOFT.SettingsService.Abstractions
         /// </summary>
         /// <param name="key">The key of the setting to unregister.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task UnregisterSettingAsync([NotNull] string key);
+        Task UnregisterSettingAsync(string key);
     }
 }

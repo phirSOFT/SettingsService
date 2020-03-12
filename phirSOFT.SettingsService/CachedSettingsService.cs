@@ -8,7 +8,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using Nito.AsyncEx;
 using phirSOFT.SettingsService.Abstractions;
 using CacheEntry = Nito.AsyncEx.AsyncLazy<(object value, System.Type type)>;
@@ -20,7 +19,6 @@ namespace phirSOFT.SettingsService
     ///     Implements a settings service, that will minimize the calls to the
     ///     inheriting settings service. All calls are managed thread safe.
     /// </summary>
-    [PublicAPI]
     public abstract class CachedSettingsService : ISettingsService
     {
         private readonly SortedSet<string> _changedKeys = new SortedSet<string>();
@@ -50,7 +48,7 @@ namespace phirSOFT.SettingsService
         protected abstract bool SupportConcurrentUpdate { get; }
 
         /// <inheritdoc/>
-        public async Task<object> GetSettingAsync(string key, Type type)
+        public async Task<object?> GetSettingAsync(string key, Type type)
         {
             using (await _readerWriterLock.ReaderLockAsync().ConfigureAwait(false))
             {
@@ -167,15 +165,14 @@ namespace phirSOFT.SettingsService
         /// <param name="key">The key of the setting.</param>
         /// <param name="type">The type of the setting.</param>
         /// <returns>The setting with the given key.</returns>
-        [ItemCanBeNull]
-        protected abstract Task<object> GetSettingInternalAsync([NotNull] string key, [NotNull] Type type);
+        protected abstract Task<object?> GetSettingInternalAsync(string key, Type type);
 
         /// <summary>
         ///     Gets whether a setting with the given key in known to the actual settings service.
         /// </summary>
         /// <param name="key">The key of the setting, to determine, whether it is registered.</param>
         /// <returns>A task containing the query result.</returns>
-        protected abstract Task<bool> IsRegisteredInternalAsync([NotNull] string key);
+        protected abstract Task<bool> IsRegisteredInternalAsync(string key);
 
         /// <summary>
         ///     Performs the actual settings registration.
@@ -186,10 +183,10 @@ namespace phirSOFT.SettingsService
         /// <param name="type">The type of the property.</param>
         /// <returns>A task, that finished when the new settings has been registered.</returns>
         protected abstract Task RegisterSettingInternalAsync(
-            [NotNull] string key,
-            [CanBeNull] object defaultValue,
-            [CanBeNull] object initialValue,
-            [NotNull] Type type);
+            string key,
+            object? defaultValue,
+            object? initialValue,
+            Type type);
 
         /// <summary>
         ///     Performs the actual set operation.
@@ -199,9 +196,9 @@ namespace phirSOFT.SettingsService
         /// <param name="type">The type of the setting.</param>
         /// <returns>A task that finished, when the value has been set.</returns>
         protected abstract Task SetSettingInternalAsync(
-            [NotNull] string key,
-            [CanBeNull] object value,
-            [NotNull] Type type);
+            string key,
+            object? value,
+            Type type);
 
         /// <summary>
         ///     Performs the actual store operation.
@@ -214,9 +211,9 @@ namespace phirSOFT.SettingsService
         /// </summary>
         /// <param name="key">The key of the property to unregister.</param>
         /// <returns>A task, that finished when the new settings has been unregistered.</returns>
-        protected abstract Task UnregisterSettingInternalAsync([NotNull] string key);
+        protected abstract Task UnregisterSettingInternalAsync(string key);
 
-        private async Task<(object, Type)> ConstructCacheEntry([NotNull] string key, [NotNull] Type type)
+        private async Task<(object?, Type)> ConstructCacheEntry(string key, Type type)
         {
             object value = await GetSettingInternalAsync(key, type).ConfigureAwait(false);
             return (value, type);

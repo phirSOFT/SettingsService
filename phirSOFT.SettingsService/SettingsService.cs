@@ -6,7 +6,6 @@
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using phirSOFT.SettingsService.Abstractions;
 using static phirSOFT.SettingsService.TypeHelper;
 
@@ -15,7 +14,6 @@ namespace phirSOFT.SettingsService
     /// <summary>
     ///     Provides extension methods for an <see cref="ISettingsService"/>.
     /// </summary>
-    [PublicAPI]
     public static class SettingsService
     {
         /// <summary>
@@ -24,8 +22,7 @@ namespace phirSOFT.SettingsService
         /// <param name="service">The service to wrap.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="service"/> is <see langword="null"/>.</exception>
         /// <returns>A pure read only settings service.</returns>
-        [NotNull]
-        public static IReadOnlySettingsService AsReadOnly([NotNull] this IReadOnlySettingsService service)
+        public static IReadOnlySettingsService AsReadOnly(this IReadOnlySettingsService service)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -44,10 +41,9 @@ namespace phirSOFT.SettingsService
         ///     <see langword="null"/>.
         /// </exception>
         /// <returns>The value of the setting, if its present in this service.</returns>
-        [ItemCanBeNull]
         public static async Task<T> GetSettingAsync<T>(
-            [NotNull] this IReadOnlySettingsService service,
-            [NotNull] string key)
+            this IReadOnlySettingsService service,
+            string key)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -69,7 +65,7 @@ namespace phirSOFT.SettingsService
         ///     <see langword="null"/>.
         /// </exception>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public static Task RegisterSettingAsync<T>([NotNull] this ISettingsService service, [NotNull] string key)
+        public static Task RegisterSettingAsync<T>(this ISettingsService service, string key)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -95,9 +91,9 @@ namespace phirSOFT.SettingsService
         /// </exception>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static Task RegisterSettingAsync(
-            [NotNull] this ISettingsService service,
-            [NotNull] string key,
-            [NotNull] Type type)
+            this ISettingsService service,
+            string key,
+            Type type)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -126,9 +122,9 @@ namespace phirSOFT.SettingsService
         /// </exception>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static Task RegisterSettingAsync<T>(
-            [NotNull] this ISettingsService service,
-            [NotNull] string key,
-            [CanBeNull] T defaultValue)
+            this ISettingsService service,
+            string key,
+            T defaultValue)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -154,9 +150,9 @@ namespace phirSOFT.SettingsService
         /// </exception>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static Task RegisterSettingAsync(
-            [NotNull] this ISettingsService service,
-            [NotNull] string key,
-            [CanBeNull] object defaultValue)
+            this ISettingsService service,
+            string key,
+            object? defaultValue)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -184,10 +180,10 @@ namespace phirSOFT.SettingsService
         /// </exception>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static Task RegisterSettingAsync(
-            [NotNull] this ISettingsService service,
-            [NotNull] string key,
-            [CanBeNull] object defaultValue,
-            [NotNull] Type type)
+            this ISettingsService service,
+            string key,
+            object? defaultValue,
+            Type type)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -215,10 +211,10 @@ namespace phirSOFT.SettingsService
         /// </exception>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static Task RegisterSettingAsync<T>(
-            [NotNull] this ISettingsService service,
-            [NotNull] string key,
-            [CanBeNull] T defaultValue,
-            [CanBeNull] T initialValue)
+            this ISettingsService service,
+            string key,
+            T defaultValue,
+            T initialValue)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -245,10 +241,10 @@ namespace phirSOFT.SettingsService
         /// </exception>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static Task RegisterSettingAsync(
-            [NotNull] this ISettingsService service,
-            [NotNull] string key,
-            object defaultValue,
-            object initialValue)
+            this ISettingsService service,
+            string key,
+            object? defaultValue,
+            object? initialValue)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -284,9 +280,9 @@ namespace phirSOFT.SettingsService
         /// </exception>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static Task SetSettingAsync<T>(
-            [NotNull] this ISettingsService service,
-            [NotNull] string key,
-            [CanBeNull] T value)
+            this ISettingsService service,
+            string key,
+            T value)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -312,9 +308,9 @@ namespace phirSOFT.SettingsService
         /// </exception>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static Task SetSettingAsync(
-            [NotNull] this ISettingsService service,
-            [NotNull] string key,
-            [CanBeNull] object value)
+            this ISettingsService service,
+            string key,
+            object? value)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));

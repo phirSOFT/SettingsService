@@ -5,8 +5,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using JetBrains.Annotations;
 
 namespace phirSOFT.SettingsService
 {
@@ -36,8 +36,7 @@ namespace phirSOFT.SettingsService
         ///     <see langword="true"/>, if <paramref name="typeA"/> can be assigned to <paramref name="typeB"/> or the other
         ///     way around.
         /// </returns>
-        [ContractAnnotation("=> true,type:notnull; => false,type:null")]
-        internal static bool AreAssignable([NotNull] TypeInfo typeA, [NotNull] TypeInfo typeB, out Type type)
+        internal static bool AreAssignable(TypeInfo typeA, TypeInfo typeB, [MaybeNullWhen(false)] out Type type)
         {
             type = null;
 
@@ -62,8 +61,7 @@ namespace phirSOFT.SettingsService
         ///     </para>
         /// </remarks>
         /// <returns>The default value of the type.</returns>
-        [CanBeNull]
-        internal static object GetDefaultValue([NotNull] Type type)
+        internal static object? GetDefaultValue([NotNull] Type type)
         {
             return type.GetTypeInfo().IsValueType ? Activator.CreateInstance(type) : null;
         }
@@ -78,8 +76,7 @@ namespace phirSOFT.SettingsService
         ///     <see langword="true"/>, if <paramref name="typeA"/> and <paramref name="typeB"/> share a common base class
         ///     other than <see cref="object"/>.
         /// </returns>
-        [ContractAnnotation("=> true,type:notnull; => false,type:null")]
-        internal static bool HaveCommonBaseType([NotNull] TypeInfo typeA, [NotNull] TypeInfo typeB, out Type type)
+        internal static bool HaveCommonBaseType(TypeInfo typeA, TypeInfo typeB, [MaybeNullWhen(false)] out Type type)
         {
             Queue<TypeInfo> typeChainA = GetTypeChain(typeA);
             Queue<TypeInfo> typeChainB = GetTypeChain(typeB);
@@ -100,9 +97,7 @@ namespace phirSOFT.SettingsService
             return false;
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private static Queue<TypeInfo> GetTypeChain([NotNull] TypeInfo type)
+        private static Queue<TypeInfo> GetTypeChain(TypeInfo type)
         {
             var chain = new Queue<TypeInfo>();
 
