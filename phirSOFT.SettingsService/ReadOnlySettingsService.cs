@@ -5,7 +5,6 @@
 
 using System;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using phirSOFT.SettingsService.Abstractions;
 
 namespace phirSOFT.SettingsService
@@ -22,13 +21,13 @@ namespace phirSOFT.SettingsService
         /// </summary>
         /// <param name="service">The service to wrap.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="service"/> is <see langword="null"/>.</exception>
-        public ReadOnlySettingsService([NotNull] IReadOnlySettingsService service)
+        public ReadOnlySettingsService(IReadOnlySettingsService service)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         /// <inheritdoc/>
-        public Task<object> GetSettingAsync(string key, Type type)
+        public Task<object?> GetSettingAsync(string key, Type type)
         {
             return _service.GetSettingAsync(key, type);
         }

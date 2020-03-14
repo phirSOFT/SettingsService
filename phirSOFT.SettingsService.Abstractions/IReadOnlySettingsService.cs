@@ -5,14 +5,12 @@
 
 using System;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 
 namespace phirSOFT.SettingsService.Abstractions
 {
     /// <summary>
     ///     Provides an interface for readonly settings.
     /// </summary>
-    [PublicAPI]
     public interface IReadOnlySettingsService
     {
         /// <summary>
@@ -21,14 +19,13 @@ namespace phirSOFT.SettingsService.Abstractions
         /// <param name="key">The key of the setting.</param>
         /// <param name="type">The type of the setting to retrieve.</param>
         /// <returns>The value of the setting, if its present in this service.</returns>
-        [ItemCanBeNull]
-        Task<object> GetSettingAsync([NotNull] string key, [NotNull] Type type);
+        Task<object?> GetSettingAsync(string key, Type type);
 
         /// <summary>
         ///     Determines whether a setting is present in this service.
         /// </summary>
         /// <param name="key">The key of the setting.</param>
         /// <returns>True, if the setting can be retrieved, false if not.</returns>
-        Task<bool> IsRegisteredAsync([NotNull] string key);
+        Task<bool> IsRegisteredAsync(string key);
     }
 }

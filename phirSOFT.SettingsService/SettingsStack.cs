@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using phirSOFT.SettingsService.Abstractions;
 
 namespace phirSOFT.SettingsService
@@ -16,7 +15,6 @@ namespace phirSOFT.SettingsService
     /// <summary>
     ///     Provides a settings service that retrieves settings from multiple sources.
     /// </summary>
-    [PublicAPI]
     public class SettingsStack : ReadOnlySettingsStack, ISettingsService
     {
         /// <summary>
@@ -26,8 +24,8 @@ namespace phirSOFT.SettingsService
         /// <param name="writableSettingsService">The <see cref="ISettingsService"/>, that changes should be written to.</param>
         /// <param name="settingsServices">The initial set of <see cref="T:phirSOFT.SettingsService.IReadOnlySettingsService"/>s.</param>
         public SettingsStack(
-            [NotNull] ISettingsService writableSettingsService,
-            [NotNull] [ItemNotNull] IEnumerable<IReadOnlySettingsService> settingsServices)
+            ISettingsService writableSettingsService,
+            IEnumerable<IReadOnlySettingsService> settingsServices)
             : base(settingsServices)
         {
             WritableService = writableSettingsService;
@@ -37,7 +35,7 @@ namespace phirSOFT.SettingsService
         ///     Initializes a new instance of the <see cref="SettingsStack"/> class.
         /// </summary>
         /// <param name="writableSettingsService">The <see cref="ISettingsService"/>, that changes should be written to.</param>
-        public SettingsStack([NotNull] ISettingsService writableSettingsService)
+        public SettingsStack(ISettingsService writableSettingsService)
             : this(writableSettingsService, Enumerable.Empty<IReadOnlySettingsService>())
         {
         }
@@ -45,7 +43,6 @@ namespace phirSOFT.SettingsService
         /// <summary>
         ///     Gets or sets the <see cref="ISettingsService"/>, that is used to write settings.
         /// </summary>
-        [NotNull]
         public ISettingsService WritableService { get; set; }
 
         /// <inheritdoc/>
