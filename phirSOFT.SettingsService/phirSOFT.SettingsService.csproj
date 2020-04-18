@@ -32,6 +32,8 @@
 
   <ItemGroup>
     <CodeAnalysisDictionary Include="CodeAnalysis.xml" />
+    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
 
