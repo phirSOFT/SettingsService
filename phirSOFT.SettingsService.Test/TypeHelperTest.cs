@@ -57,7 +57,7 @@ namespace phirSOFT.SettingsService.Test
             }
             else
             {
-                Assert.IsTrue(TypeHelper.AreAssignable(a.GetTypeInfo(), b.GetTypeInfo(), out Type common));
+                Assert.IsTrue(TypeHelper.AreAssignable(a.GetTypeInfo(), b.GetTypeInfo(), out Type? common));
                 Assert.AreEqual(expectedAssignment, common);
             }
         }
@@ -102,8 +102,8 @@ namespace phirSOFT.SettingsService.Test
         public void TestAreAssignableSymmetrical(Type a, Type b)
         {
             Assert.AreEqual(
-                TypeHelper.AreAssignable(a.GetTypeInfo(), b.GetTypeInfo(), out Type abCommon),
-                TypeHelper.AreAssignable(b.GetTypeInfo(), a.GetTypeInfo(), out Type baCommon)
+                TypeHelper.AreAssignable(a.GetTypeInfo(), b.GetTypeInfo(), out Type? abCommon),
+                TypeHelper.AreAssignable(b.GetTypeInfo(), a.GetTypeInfo(), out Type? baCommon)
             );
             Assert.AreEqual(abCommon, baCommon);
         }
@@ -123,7 +123,7 @@ namespace phirSOFT.SettingsService.Test
         [TestCase(typeof(double), default(double))]
         public void TestDefaultType(Type type, object expectedDefaultValue)
         {
-            object defaultValue = TypeHelper.GetDefaultValue(type);
+            object? defaultValue = TypeHelper.GetDefaultValue(type);
             Assert.AreEqual(expectedDefaultValue, defaultValue);
         }
 
@@ -172,7 +172,7 @@ namespace phirSOFT.SettingsService.Test
             }
             else
             {
-                Assert.IsTrue(TypeHelper.HaveCommonBaseType(a.GetTypeInfo(), b.GetTypeInfo(), out Type common));
+                Assert.IsTrue(TypeHelper.HaveCommonBaseType(a.GetTypeInfo(), b.GetTypeInfo(), out Type? common));
                 Assert.AreEqual(expectedCommon, common);
             }
         }
@@ -217,8 +217,8 @@ namespace phirSOFT.SettingsService.Test
         public void TestHaveCommonBaseTypeSymmetrical(Type a, Type b)
         {
             Assert.AreEqual(
-                TypeHelper.HaveCommonBaseType(a.GetTypeInfo(), b.GetTypeInfo(), out Type abCommon),
-                TypeHelper.HaveCommonBaseType(b.GetTypeInfo(), a.GetTypeInfo(), out Type baCommon)
+                TypeHelper.HaveCommonBaseType(a.GetTypeInfo(), b.GetTypeInfo(), out Type? abCommon),
+                TypeHelper.HaveCommonBaseType(b.GetTypeInfo(), a.GetTypeInfo(), out Type? baCommon)
             );
             Assert.AreEqual(abCommon, baCommon);
         }
