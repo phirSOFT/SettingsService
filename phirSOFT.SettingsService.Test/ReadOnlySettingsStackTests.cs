@@ -19,7 +19,7 @@ namespace phirSOFT.SettingsService.Test
             Type type = typeof(string);
 
             // Act
-            object result = await readOnlySettingsStack.GetSettingAsync(
+            object? result = await readOnlySettingsStack.GetSettingAsync(
                 Key1,
                 type);
 
