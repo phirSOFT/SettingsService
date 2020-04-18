@@ -1,17 +1,16 @@
 ﻿// <copyright file="TypeHelperTest.cs" company="phirSOFT">
 // Copyright (c) phirSOFT. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed under the MIT license. See LICENSE file in the project root for full
+// license information.
 // </copyright>
 
 using System;
 using System.Reflection;
 using NUnit.Framework;
 
-namespace phirSOFT.SettingsService.Test
-{
-[TestFixture]
-public class TypeHelperTest
-{
+namespace phirSOFT.SettingsService.Test {
+  [TestFixture]
+  public class TypeHelperTest {
     [Test]
     [TestCase(typeof(Root), typeof(Root), typeof(Root))]
     [TestCase(typeof(Root), typeof(A), typeof(Root))]
@@ -49,17 +48,16 @@ public class TypeHelperTest
     [TestCase(typeof(B2), typeof(B2), typeof(B2))]
     [TestCase(typeof(B2), typeof(Other), null)]
     [TestCase(typeof(Other), typeof(Other), typeof(Other))]
-    public void TestAreAssignable(Type a, Type b, Type expectedAssignment)
-    {
-        if (expectedAssignment == null)
-        {
-            Assert.IsFalse(TypeHelper.AreAssignable(a.GetTypeInfo(), b.GetTypeInfo(), out _));
-        }
-        else
-        {
-            Assert.IsTrue(TypeHelper.AreAssignable(a.GetTypeInfo(), b.GetTypeInfo(), out Type? common));
-            Assert.AreEqual(expectedAssignment, common);
-        }
+    public void
+    TestAreAssignable(Type a, Type b, Type expectedAssignment) {
+      if (expectedAssignment == null) {
+        Assert.IsFalse(
+            TypeHelper.AreAssignable(a.GetTypeInfo(), b.GetTypeInfo(), out _));
+      } else {
+        Assert.IsTrue(TypeHelper.AreAssignable(a.GetTypeInfo(), b.GetTypeInfo(),
+                                               out Type? common));
+        Assert.AreEqual(expectedAssignment, common);
+      }
     }
 
     [Test]
@@ -99,13 +97,13 @@ public class TypeHelperTest
     [TestCase(typeof(B2), typeof(B2))]
     [TestCase(typeof(B2), typeof(Other))]
     [TestCase(typeof(Other), typeof(Other))]
-    public void TestAreAssignableSymmetrical(Type a, Type b)
-    {
-        Assert.AreEqual(
-            TypeHelper.AreAssignable(a.GetTypeInfo(), b.GetTypeInfo(), out Type? abCommon),
-            TypeHelper.AreAssignable(b.GetTypeInfo(), a.GetTypeInfo(), out Type? baCommon)
-        );
-        Assert.AreEqual(abCommon, baCommon);
+    public void
+    TestAreAssignableSymmetrical(Type a, Type b) {
+      Assert.AreEqual(TypeHelper.AreAssignable(a.GetTypeInfo(), b.GetTypeInfo(),
+                                               out Type? abCommon),
+                      TypeHelper.AreAssignable(b.GetTypeInfo(), a.GetTypeInfo(),
+                                               out Type? baCommon));
+      Assert.AreEqual(abCommon, baCommon);
     }
 
     [Test]
@@ -121,10 +119,10 @@ public class TypeHelperTest
     [TestCase(typeof(ulong), default(ulong))]
     [TestCase(typeof(float), default(float))]
     [TestCase(typeof(double), default(double))]
-    public void TestDefaultType(Type type, object expectedDefaultValue)
-    {
-        object? defaultValue = TypeHelper.GetDefaultValue(type);
-        Assert.AreEqual(expectedDefaultValue, defaultValue);
+    public void
+    TestDefaultType(Type type, object expectedDefaultValue) {
+      object? defaultValue = TypeHelper.GetDefaultValue(type);
+      Assert.AreEqual(expectedDefaultValue, defaultValue);
     }
 
     [Test]
@@ -164,17 +162,16 @@ public class TypeHelperTest
     [TestCase(typeof(B2), typeof(B2), typeof(B2))]
     [TestCase(typeof(B2), typeof(Other), null)]
     [TestCase(typeof(Other), typeof(Other), typeof(Other))]
-    public void TestHaveCommonBaseType(Type a, Type b, Type expectedCommon)
-    {
-        if (expectedCommon == null)
-        {
-            Assert.IsFalse(TypeHelper.HaveCommonBaseType(a.GetTypeInfo(), b.GetTypeInfo(), out _));
-        }
-        else
-        {
-            Assert.IsTrue(TypeHelper.HaveCommonBaseType(a.GetTypeInfo(), b.GetTypeInfo(), out Type? common));
-            Assert.AreEqual(expectedCommon, common);
-        }
+    public void
+    TestHaveCommonBaseType(Type a, Type b, Type expectedCommon) {
+      if (expectedCommon == null) {
+        Assert.IsFalse(TypeHelper.HaveCommonBaseType(a.GetTypeInfo(),
+                                                     b.GetTypeInfo(), out _));
+      } else {
+        Assert.IsTrue(TypeHelper.HaveCommonBaseType(
+            a.GetTypeInfo(), b.GetTypeInfo(), out Type? common));
+        Assert.AreEqual(expectedCommon, common);
+      }
     }
 
     [Test]
@@ -214,45 +211,30 @@ public class TypeHelperTest
     [TestCase(typeof(B2), typeof(B2))]
     [TestCase(typeof(B2), typeof(Other))]
     [TestCase(typeof(Other), typeof(Other))]
-    public void TestHaveCommonBaseTypeSymmetrical(Type a, Type b)
-    {
-        Assert.AreEqual(
-            TypeHelper.HaveCommonBaseType(a.GetTypeInfo(), b.GetTypeInfo(), out Type? abCommon),
-            TypeHelper.HaveCommonBaseType(b.GetTypeInfo(), a.GetTypeInfo(), out Type? baCommon)
-        );
-        Assert.AreEqual(abCommon, baCommon);
+    public void
+    TestHaveCommonBaseTypeSymmetrical(Type a, Type b) {
+      Assert.AreEqual(
+          TypeHelper.HaveCommonBaseType(a.GetTypeInfo(), b.GetTypeInfo(),
+                                        out Type? abCommon),
+          TypeHelper.HaveCommonBaseType(b.GetTypeInfo(), a.GetTypeInfo(),
+                                        out Type? baCommon));
+      Assert.AreEqual(abCommon, baCommon);
     }
 
-    private class Root
-    {
-    }
+    private class Root {}
 
-    private class A : Root
-    {
-    }
+    private class A : Root {}
 
-    private class B : Root
-    {
-    }
+    private class B : Root {}
 
-    private class A1 : A
-    {
-    }
+    private class A1 : A {}
 
-    private class A2 : A
-    {
-    }
+    private class A2 : A {}
 
-    private class B1 : B
-    {
-    }
+    private class B1 : B {}
 
-    private class B2 : B
-    {
-    }
+    private class B2 : B {}
 
-    private class Other
-    {
-    }
-}
+    private class Other {}
+  }
 }
