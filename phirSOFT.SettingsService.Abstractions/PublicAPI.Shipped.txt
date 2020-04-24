@@ -1,1 +1,9 @@
-﻿
+﻿phirSOFT.SettingsService.Abstractions.IReadOnlySettingsService
+phirSOFT.SettingsService.Abstractions.IReadOnlySettingsService.GetSettingAsync(string key, System.Type type) -> System.Threading.Tasks.Task<object>
+phirSOFT.SettingsService.Abstractions.IReadOnlySettingsService.IsRegisteredAsync(string key) -> System.Threading.Tasks.Task<bool>
+phirSOFT.SettingsService.Abstractions.ISettingsService
+phirSOFT.SettingsService.Abstractions.ISettingsService.DiscardAsync() -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.Abstractions.ISettingsService.RegisterSettingAsync(string key, object defaultValue, object initialValue, System.Type type) -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.Abstractions.ISettingsService.SetSettingAsync(string key, object value, System.Type type) -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.Abstractions.ISettingsService.StoreAsync() -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.Abstractions.ISettingsService.UnregisterSettingAsync(string key) -> System.Threading.Tasks.Task

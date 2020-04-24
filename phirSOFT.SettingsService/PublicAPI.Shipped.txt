@@ -1,1 +1,50 @@
-﻿
+﻿abstract phirSOFT.SettingsService.CachedSettingsService.GetSettingInternalAsync(string key, System.Type type) -> System.Threading.Tasks.Task<object>
+abstract phirSOFT.SettingsService.CachedSettingsService.IsRegisteredInternalAsync(string key) -> System.Threading.Tasks.Task<bool>
+abstract phirSOFT.SettingsService.CachedSettingsService.RegisterSettingInternalAsync(string key, object defaultValue, object initialValue, System.Type type) -> System.Threading.Tasks.Task
+abstract phirSOFT.SettingsService.CachedSettingsService.SetSettingInternalAsync(string key, object value, System.Type type) -> System.Threading.Tasks.Task
+abstract phirSOFT.SettingsService.CachedSettingsService.StoreInternalAsync() -> System.Threading.Tasks.Task
+abstract phirSOFT.SettingsService.CachedSettingsService.SupportConcurrentRegister.get -> bool
+abstract phirSOFT.SettingsService.CachedSettingsService.SupportConcurrentUnregister.get -> bool
+abstract phirSOFT.SettingsService.CachedSettingsService.SupportConcurrentUpdate.get -> bool
+abstract phirSOFT.SettingsService.CachedSettingsService.UnregisterSettingInternalAsync(string key) -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.CachedSettingsService
+phirSOFT.SettingsService.CachedSettingsService.CachedSettingsService() -> void
+phirSOFT.SettingsService.CachedSettingsService.DiscardAsync() -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.CachedSettingsService.GetSettingAsync(string key, System.Type type) -> System.Threading.Tasks.Task<object>
+phirSOFT.SettingsService.CachedSettingsService.IsRegisteredAsync(string key) -> System.Threading.Tasks.Task<bool>
+phirSOFT.SettingsService.CachedSettingsService.RegisterSettingAsync(string key, object defaultValue, object initialValue, System.Type type) -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.CachedSettingsService.SetSettingAsync(string key, object value, System.Type type) -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.CachedSettingsService.StoreAsync() -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.CachedSettingsService.UnregisterSettingAsync(string key) -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.ReadOnlySettingsService
+phirSOFT.SettingsService.ReadOnlySettingsService.GetSettingAsync(string key, System.Type type) -> System.Threading.Tasks.Task<object>
+phirSOFT.SettingsService.ReadOnlySettingsService.IsRegisteredAsync(string key) -> System.Threading.Tasks.Task<bool>
+phirSOFT.SettingsService.ReadOnlySettingsService.ReadOnlySettingsService(phirSOFT.SettingsService.Abstractions.IReadOnlySettingsService service) -> void
+phirSOFT.SettingsService.ReadOnlySettingsStack
+phirSOFT.SettingsService.ReadOnlySettingsStack.GetSettingAsync(string key, System.Type type) -> System.Threading.Tasks.Task<object>
+phirSOFT.SettingsService.ReadOnlySettingsStack.IsRegisteredAsync(string key) -> System.Threading.Tasks.Task<bool>
+phirSOFT.SettingsService.ReadOnlySettingsStack.ReadOnlySettingsStack() -> void
+phirSOFT.SettingsService.ReadOnlySettingsStack.ReadOnlySettingsStack(System.Collections.Generic.IEnumerable<phirSOFT.SettingsService.Abstractions.IReadOnlySettingsService> settingsServices) -> void
+phirSOFT.SettingsService.ReadOnlySettingsStack.TryGetSettingService(string key) -> System.Threading.Tasks.Task<phirSOFT.SettingsService.Abstractions.IReadOnlySettingsService>
+phirSOFT.SettingsService.SettingsService
+phirSOFT.SettingsService.SettingsStack
+phirSOFT.SettingsService.SettingsStack.DiscardAsync() -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.SettingsStack.RegisterSettingAsync(string key, object defaultValue, object initialValue, System.Type type) -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.SettingsStack.SetSettingAsync(string key, object value, System.Type type) -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.SettingsStack.SettingsStack(phirSOFT.SettingsService.Abstractions.ISettingsService writableSettingsService) -> void
+phirSOFT.SettingsService.SettingsStack.SettingsStack(phirSOFT.SettingsService.Abstractions.ISettingsService writableSettingsService, System.Collections.Generic.IEnumerable<phirSOFT.SettingsService.Abstractions.IReadOnlySettingsService> settingsServices) -> void
+phirSOFT.SettingsService.SettingsStack.StoreAsync() -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.SettingsStack.UnregisterSettingAsync(string key) -> System.Threading.Tasks.Task
+phirSOFT.SettingsService.SettingsStack.WritableService.get -> phirSOFT.SettingsService.Abstractions.ISettingsService
+phirSOFT.SettingsService.SettingsStack.WritableService.set -> void
+static phirSOFT.SettingsService.SettingsService.AsReadOnly(this phirSOFT.SettingsService.Abstractions.IReadOnlySettingsService service) -> phirSOFT.SettingsService.Abstractions.IReadOnlySettingsService
+static phirSOFT.SettingsService.SettingsService.GetSettingAsync<T>(this phirSOFT.SettingsService.Abstractions.IReadOnlySettingsService service, string key) -> System.Threading.Tasks.Task<T>
+static phirSOFT.SettingsService.SettingsService.RegisterSettingAsync(this phirSOFT.SettingsService.Abstractions.ISettingsService service, string key, System.Type type) -> System.Threading.Tasks.Task
+static phirSOFT.SettingsService.SettingsService.RegisterSettingAsync(this phirSOFT.SettingsService.Abstractions.ISettingsService service, string key, object defaultValue) -> System.Threading.Tasks.Task
+static phirSOFT.SettingsService.SettingsService.RegisterSettingAsync(this phirSOFT.SettingsService.Abstractions.ISettingsService service, string key, object defaultValue, System.Type type) -> System.Threading.Tasks.Task
+static phirSOFT.SettingsService.SettingsService.RegisterSettingAsync(this phirSOFT.SettingsService.Abstractions.ISettingsService service, string key, object defaultValue, object initialValue) -> System.Threading.Tasks.Task
+static phirSOFT.SettingsService.SettingsService.RegisterSettingAsync<T>(this phirSOFT.SettingsService.Abstractions.ISettingsService service, string key) -> System.Threading.Tasks.Task
+static phirSOFT.SettingsService.SettingsService.RegisterSettingAsync<T>(this phirSOFT.SettingsService.Abstractions.ISettingsService service, string key, T defaultValue) -> System.Threading.Tasks.Task
+static phirSOFT.SettingsService.SettingsService.RegisterSettingAsync<T>(this phirSOFT.SettingsService.Abstractions.ISettingsService service, string key, T defaultValue, T initialValue) -> System.Threading.Tasks.Task
+static phirSOFT.SettingsService.SettingsService.SetSettingAsync(this phirSOFT.SettingsService.Abstractions.ISettingsService service, string key, object value) -> System.Threading.Tasks.Task
+static phirSOFT.SettingsService.SettingsService.SetSettingAsync<T>(this phirSOFT.SettingsService.Abstractions.ISettingsService service, string key, T value) -> System.Threading.Tasks.Task
