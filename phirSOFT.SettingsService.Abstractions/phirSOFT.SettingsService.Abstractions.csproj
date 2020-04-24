@@ -31,7 +31,7 @@
     <None Remove="CodeAnalysis.xml" />
     <None Remove="stylecop.json" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <CodeAnalysisDictionary Include="CodeAnalysis.xml" />
     <AdditionalFiles Include="stylecop.json" />
