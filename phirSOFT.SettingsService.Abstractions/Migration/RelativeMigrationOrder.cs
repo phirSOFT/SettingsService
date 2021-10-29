@@ -11,13 +11,18 @@ namespace phirSOFT.SettingsService.Abstractions
     public enum RelativeMigrationOrder
     {
         /// <summary>
-        /// The annotated <see cref="ISettingsService"/> should be applied before the referenced.
+        /// The annotated <see cref="ISettingMigration"/> should be applied before the referenced.
         /// </summary>
         Before = -1,
 
         /// <summary>
-        /// The annotated <see cref="ISettingsService"/> should be applied after the referenced.
+        /// The annotated <see cref="ISettingMigration"/> should be applied after the referenced.
         /// </summary>
         After = 1,
+
+        /// <summary>
+        /// The annoated <see cref="ISettingMigration"/> can be applied independently of the referenced.
+        /// </summary>
+        Unrelated = 0,
     }
 }
